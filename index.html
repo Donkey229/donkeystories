@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Donkey Stories</title>
+  <meta name="description" content="Donkey Stories – resor, musik och allt vi skapar.">
+  <meta name="theme-color" content="#012235">
+  <meta property="og:title" content="Donkey Stories">
+  <meta property="og:description" content="Resor, musik och allt vi skapar.">
+  <meta property="og:image" content="https://donkeystories.com/img/logo.jpg">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <link rel="preload" href="fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="nav">
+    <div class="wrap nav__in">
+      <a class="nav__brand" href="#top" aria-label="Donkey Stories">
+        <img src="img/logo.jpg" alt="" width="36" height="36">
+        <span>Donkey Stories</span>
+      </a>
+      <nav class="nav__links" aria-label="Meny" data-i18n-attr="aria-label:nav.label">
+        <a href="#vlogg" data-i18n="nav.vlog">Vlogg</a>
+        <a href="#musik" data-i18n="nav.music">Musik</a>
+        <a href="#emma" data-i18n="nav.emma">Emma &amp; Du</a>
+        <a href="#verktyg" data-i18n="nav.tools">Verktyg</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Språk / Language / ภาษา">
+        <button type="button" data-lang="sv">SV</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="th">TH</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- 1. Toppen -->
+    <section class="hero wrap">
+      <div class="hero__logo">
+        <div class="glow" aria-hidden="true"></div>
+        <img src="img/logo.jpg" alt="Donkey – logga" data-i18n-attr="alt:logo.alt" width="640" height="640">
+      </div>
+      <p class="eyebrow"><span class="dot"></span>Donkey Stories</p>
+      <h1 data-i18n="hero.title">Resor, musik och allt vi skapar.</h1>
+      <p class="lead" data-i18n="hero.lead">Vi är Donkey och Emma. Här samlar vi våra vloggar, Donkey-musiken och verktygen vi bygger – allt på ett ställe.</p>
+      <a class="btn" href="#upptack" data-i18n="hero.cta">Utforska</a>
+    </section>
+
+    <!-- 2. Tre kort -->
+    <section class="section wrap" id="upptack">
+      <p class="eyebrow"><span class="dot"></span><span data-i18n="cards.eyebrow">Upptäck</span></p>
+      <h2 data-i18n="cards.title">Tre världar, en åsna.</h2>
+      <div class="cards">
+        <article class="card" id="vlogg">
+          <div class="frame"><img src="img/kort-vlogg.jpg" alt="" loading="lazy"></div>
+          <div class="card__body">
+            <p class="tag" data-i18n="nav.vlog">Vlogg</p>
+            <h3 data-i18n="cards.vlog.title">Vi två på resa</h3>
+            <p data-i18n="cards.vlog.text">Danmark, Norge, Sverige och allt däremellan.</p>
+            <span class="soon" data-i18n="soon">Kommer snart</span>
+          </div>
+        </article>
+        <article class="card" id="musik">
+          <div class="frame"><img src="img/kort-musik.jpg" alt="" loading="lazy"></div>
+          <div class="card__body">
+            <p class="tag" data-i18n="nav.music">Musik</p>
+            <h3 data-i18n="cards.music.title">Donkey Music</h3>
+            <p data-i18n="cards.music.text">Musikvideor och låtar gjorda från grunden.</p>
+            <span class="soon" data-i18n="soon">Kommer snart</span>
+          </div>
+        </article>
+        <article class="card" id="emma">
+          <div class="frame frame--heart" aria-hidden="true"><span>♥</span></div>
+          <div class="card__body">
+            <p class="tag" data-i18n="nav.emma">Emma &amp; Du</p>
+            <h3 data-i18n="cards.emma.title">Vår egen app</h3>
+            <p data-i18n="cards.emma.text">Bilder, meddelanden och kalender – bara för oss två och de vi bjuder in.</p>
+            <span class="soon soon--lock" data-i18n="private">Privat · kräver inloggning</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 2b. Verktyg -->
+    <section class="section wrap" id="verktyg">
+      <p class="eyebrow"><span class="dot"></span><span data-i18n="tools.eyebrow">Donkey Lab</span></p>
+      <h2 data-i18n="tools.title">Verktygen bakom allt.</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="frame"><img src="img/verktyg-panel.png" alt="" loading="lazy"></div>
+          <div class="card__body">
+            <p class="tag">VEGAS Pro</p>
+            <h3>Donkey Panel</h3>
+            <p data-i18n="tools.panel.text">Tillägg till VEGAS Pro: färg, LUT:ar, klipp och projekt i en panel.</p>
+            <span class="soon" data-i18n="download.soon">Nedladdning kommer snart</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame frame--wave" aria-hidden="true"><span></span></div>
+          <div class="card__body">
+            <p class="tag">Cubase 10.5</p>
+            <h3>Cubase AI Panel</h3>
+            <p data-i18n="tools.cubase.text">AI-panel som skapar MIDI, stems och mallar som öppnas direkt i Cubase.</p>
+            <span class="soon" data-i18n="download.soon">Nedladdning kommer snart</span>
+          </div>
+        </article>
+        <article class="card">
+          <div class="frame frame--contain"><img src="img/verktyg-grading.png" alt="" loading="lazy"></div>
+          <div class="card__body">
+            <p class="tag" data-i18n="tools.grading.tag">Ljud &amp; bild</p>
+            <h3>Donkey Grading</h3>
+            <p data-i18n="tools.grading.text">Färggradering av S-Log-material – och snart gradering som tjänst.</p>
+            <span class="soon" data-i18n="soon">Kommer snart</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Om oss -->
+    <section class="section wrap" id="om-oss">
+      <div class="about">
+        <div class="about__text">
+          <p class="eyebrow"><span class="dot"></span><span data-i18n="about.eyebrow">Om oss</span></p>
+          <h2 data-i18n="about.title">Två personer, en kamera.</h2>
+          <p data-i18n="about.p1">Vi filmar det vi upplever – färjor över havet, regniga nätter i Köpenhamn och solnedgångar vid sjön.</p>
+          <p data-i18n="about.p2">Donkey gör musiken och bygger verktygen. Emma ser till att kameran pekar åt rätt håll (för det mesta).</p>
+        </div>
+        <div class="frame frame--wide"><img src="img/om-farja.jpg" alt="" loading="lazy"></div>
+      </div>
+    </section>
+
+    <!-- 4. Senaste videon -->
+    <section class="section wrap" id="video">
+      <p class="eyebrow"><span class="dot"></span><span data-i18n="video.eyebrow">Senaste videon</span></p>
+      <h2 data-i18n="video.title">Nytt avsnitt snart.</h2>
+      <div class="frame video-slot">
+        <div class="video-slot__in">
+          <span class="play" aria-hidden="true"></span>
+          <p data-i18n="video.text">Här visas det senaste avsnittet från YouTube.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. CTA -->
+    <section class="section wrap cta">
+      <p class="eyebrow"><span class="dot"></span><span data-i18n="cta.eyebrow">Business</span></p>
+      <h2 data-i18n="cta.title">Följ med på resan.</h2>
+      <p class="lead" data-i18n="cta.text">Samarbeten, varumärke och tjänster inom ljud och bild – snart här.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__in">
+      <div class="social">
+        <span class="social__link">YouTube<small data-i18n="soon.short">snart</small></span>
+        <span class="social__link">TikTok<small data-i18n="soon.short">snart</small></span>
+        <span class="social__link">Instagram<small data-i18n="soon.short">snart</small></span>
+      </div>
+      <p class="mono">© 2026 Donkey Stories</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
