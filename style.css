@@ -133,6 +133,64 @@ h3 { font-size: 22px; margin-bottom: 6px; }
 }
 .frame img, .frame video { width: 100%; height: 100%; object-fit: cover; }
 
+/* vlogg i reel-stil: stående 9:16-klipp som man sveper mellan */
+.reels__hint { margin: -20px 0 18px; }
+.reels {
+  display: grid; grid-auto-flow: column; grid-auto-columns: min(300px, 78vw); gap: 16px;
+  overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-x: contain;
+  padding-bottom: 12px; scrollbar-width: none;
+}
+.reels::-webkit-scrollbar { display: none; }
+.reels:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 22px; }
+.reel {
+  position: relative; aspect-ratio: 9 / 16; border-radius: 22px; overflow: hidden;
+  background: #000; scroll-snap-align: start; isolation: isolate;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .45), inset 0 0 0 1px var(--line);
+}
+.reel__media { position: absolute; inset: 0; z-index: -1; }
+.reel__media img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 14s ease-in-out infinite alternate; }
+@keyframes kenburns { from { transform: scale(1.02); } to { transform: scale(1.14); } }
+/* mörk ton upptill och nertill så att texten syns över bilden */
+.reel::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.45) 0%, transparent 18%, transparent 50%, rgba(0,0,0,.85) 100%);
+}
+.reel__next {
+  width: 100%; height: 100%; display: grid; place-items: center;
+  background: radial-gradient(circle at 50% 40%, rgba(247, 162, 27, .3), transparent 55%),
+              radial-gradient(circle at 30% 80%, rgba(95, 214, 200, .22), transparent 60%), var(--bg-2);
+}
+.reel__next img { width: 120px; height: 120px; border-radius: 50%; animation: none; }
+
+.reel__bars { position: absolute; top: 12px; left: 12px; right: 12px; display: flex; gap: 4px; }
+.reel__bars span { flex: 1; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, .35); overflow: hidden; }
+.reel__bars .on::before { content: ""; display: block; height: 100%; width: 100%; background: #fff; transform-origin: left; animation: fill 6s linear infinite; }
+@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.reel__badge {
+  position: absolute; top: 26px; right: 12px; padding: 4px 9px; border-radius: 999px;
+  font: 500 11px var(--mono); color: #1b1203; background: var(--orange);
+}
+
+.reel__rail {
+  position: absolute; right: 10px; bottom: 96px; list-style: none;
+  display: flex; flex-direction: column; gap: 18px;
+}
+.reel__rail svg { width: 28px; height: 28px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linejoin: round; filter: drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+
+.reel__info { position: absolute; left: 14px; right: 56px; bottom: 16px; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, .6); }
+.reel__who { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 14px; margin-bottom: 8px; }
+.reel__who img { width: 32px; height: 32px; border-radius: 50%; box-shadow: 0 0 0 2px var(--teal); }
+.reel__follow { font-size: 12px; padding: 3px 10px; border: 1px solid rgba(255, 255, 255, .8); border-radius: 8px; text-shadow: none; }
+.reel h3 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.reel__caption {
+  font-size: 13px; line-height: 1.4; opacity: .92;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.reel__audio { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 12px; overflow: hidden; }
+.reel__marquee { overflow: hidden; white-space: nowrap; flex: 1; }
+.reel__marquee span { display: inline-block; padding-left: 100%; animation: marquee 9s linear infinite; }
+@keyframes marquee { to { transform: translateX(-100%); } }
+
 /* kort */
 .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .card {
@@ -226,6 +284,7 @@ h3 { font-size: 22px; margin-bottom: 6px; }
   .nav__brand span { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .glow { animation: none; }
+  .glow, .reel__media img, .reel__bars .on::before, .reel__marquee span { animation: none; }
+  .reel__marquee span { padding-left: 0; }
   html { scroll-behavior: auto; }
 }

@@ -1,6 +1,11 @@
 // Språkbyte: SV / EN / TH. Texterna ligger här; index.html innehåller svenska som standard.
 const TEXTS = {
   sv: {
+    "vlog.title": "Vi två på resa.", "vlog.hint": "Svep för nästa klipp →", "vlog.follow": "Följ",
+    "vlog.audio": "Donkey Music · originalljud",
+    "vlog.r1.title": "Regn i Nyhavn", "vlog.r1.text": "Köpenhamn en grå dag – båtar, fasader och kaffe i handen. #danmark #köpenhamn",
+    "vlog.r2.title": "Över havet", "vlog.r2.text": "Färjan mot nästa land. Sjögång, havsluft och en åsna vid relingen. #färja #roadtrip",
+    "vlog.r3.title": "Nästa stopp: Norge", "vlog.r3.text": "Fjordar, fjäll och alldeles för lite sömn. Följ med! #norge #vlogg",
     "nav.vlog": "Vlogg", "nav.music": "Musik", "nav.emma": "Emma & Du", "nav.tools": "Verktyg",
     "cards.emma.title": "Vår egen app", "cards.emma.text": "Bilder, meddelanden och kalender – bara för oss två och de vi bjuder in.",
     "private": "Privat · kräver inloggning",
@@ -25,6 +30,11 @@ const TEXTS = {
     "cta.title": "Följ med på resan.", "cta.text": "Samarbeten, varumärke och tjänster inom ljud och bild – snart här.",
   },
   en: {
+    "vlog.title": "The two of us, on the road.", "vlog.hint": "Swipe for the next clip →", "vlog.follow": "Follow",
+    "vlog.audio": "Donkey Music · original audio",
+    "vlog.r1.title": "Rain in Nyhavn", "vlog.r1.text": "Copenhagen on a grey day – boats, facades and a coffee in hand. #denmark #copenhagen",
+    "vlog.r2.title": "Across the sea", "vlog.r2.text": "The ferry to the next country. Rolling waves, sea air and a donkey at the rail. #ferry #roadtrip",
+    "vlog.r3.title": "Next stop: Norway", "vlog.r3.text": "Fjords, mountains and far too little sleep. Come along! #norway #vlog",
     "nav.vlog": "Vlog", "nav.music": "Music", "nav.emma": "Emma & You", "nav.tools": "Tools",
     "cards.emma.title": "Our own app", "cards.emma.text": "Photos, messages and a shared calendar – just for the two of us and the people we invite.",
     "private": "Private · sign-in required",
@@ -49,6 +59,11 @@ const TEXTS = {
     "cta.title": "Come along for the ride.", "cta.text": "Collaborations, brand work and sound & image services – coming soon.",
   },
   th: {
+    "vlog.title": "เราสองคนออกเดินทาง", "vlog.hint": "ปัดเพื่อดูคลิปถัดไป →", "vlog.follow": "ติดตาม",
+    "vlog.audio": "Donkey Music · เสียงต้นฉบับ",
+    "vlog.r1.title": "ฝนตกที่นีฮาวน์", "vlog.r1.text": "โคเปนเฮเกนในวันฟ้าครึ้ม – เรือ ตึกหลากสี และกาแฟในมือ #เดนมาร์ก #โคเปนเฮเกน",
+    "vlog.r2.title": "ข้ามทะเล", "vlog.r2.text": "เรือเฟอร์รี่สู่ประเทศถัดไป คลื่นลม อากาศทะเล และลาหนึ่งตัวที่ราวเรือ #เฟอร์รี่ #roadtrip",
+    "vlog.r3.title": "จุดหมายถัดไป: นอร์เวย์", "vlog.r3.text": "ฟยอร์ด ภูเขา และการนอนที่น้อยเกินไป มาเที่ยวด้วยกัน! #นอร์เวย์ #วล็อก",
     "nav.vlog": "วล็อก", "nav.music": "เพลง", "nav.emma": "เอ็มม่ากับคุณ", "nav.tools": "เครื่องมือ",
     "cards.emma.title": "แอปของเราเอง", "cards.emma.text": "รูปภาพ ข้อความ และปฏิทิน – สำหรับเราสองคนและคนที่เราเชิญเท่านั้น",
     "private": "ส่วนตัว · ต้องเข้าสู่ระบบ",
