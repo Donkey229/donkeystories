@@ -740,7 +740,11 @@ if ($Sorterade.Count -eq 0) {
     $i = 0
     foreach ($k in $Sorterade) {
         $i++
-        $etikett = if ($k.Projekt) { " -> projekt\$($k.Projekt)" } else { '' }
+        $etikett = ''
+        if ($k.Projekt) {
+            $del = if ($ArkivNamn.ContainsKey($k.Projekt.ToLowerInvariant())) { 'arkiv' } else { 'projekt' }
+            $etikett = " -> $del\$($k.Projekt)"
+        }
         Skriv-Info ("  {0,2}. {1}{2}   ({3})" -f $i, $k.Sokvag, $etikett, ($k.Kallor -join ', '))
     }
     Write-Host ''
