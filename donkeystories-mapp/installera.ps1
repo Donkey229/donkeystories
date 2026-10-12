@@ -829,6 +829,8 @@ foreach ($f in $MallFiler) {
     $relativ = $f.FullName.Substring($MallMapp.Length).TrimStart('\', '/')
     # Projektmallarna (mall\projekt\...) och det globala blocket hanteras längre ner.
     if ($relativ -match '^projekt[\\/]' -or $relativ -eq 'global-CLAUDE.md') { continue }
+    # Mallen heter gitignore-mall i repot (annars skulle den gälla för repot självt).
+    if ($relativ -eq 'gitignore-mall') { $relativ = '.gitignore' }
     $mal = Join-Path $Mapp $relativ
     if (Test-Path -LiteralPath $mal) { Skriv-Info "Finns redan, rör inte: $mal"; continue }
     Skriv-Text $mal (Anpassa-Mall (Las-Text $f.FullName))
