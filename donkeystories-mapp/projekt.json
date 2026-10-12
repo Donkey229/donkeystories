@@ -12,6 +12,7 @@
     {"namn": "donkey-grading", "titel": "Donkey Grading", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-grading"], "arkiv": false},
     {"namn": "donkey-looks", "titel": "Donkey Looks (gemensamma LUT-filer)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-looks"], "arkiv": false},
     {"namn": "donkey-panel", "titel": "Donkey Panel (VEGAS-tillägg)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-panel"], "arkiv": false},
+    {"namn": "donkey-hub", "titel": "Donkey Hub (Cowork + God Mode, planerad)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-hub"], "arkiv": false},
     {"namn": "god-mode", "titel": "God Mode", "repo": "", "kanda_platser": ["%DOKUMENT%\\god-mode"], "arkiv": false},
     {"namn": "donkey-lyrics", "titel": "Donkey Lyrics", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-lyrics"], "arkiv": false},
     {"namn": "ljudbraedan", "titel": "Ljudbrädan", "repo": "", "kanda_platser": ["%DOKUMENT%\\ljudbraedan"], "arkiv": false},

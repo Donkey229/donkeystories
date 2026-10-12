@@ -18,6 +18,7 @@
 | **Donkey Grading** | `projekt\donkey-grading` | Färggradering, LUT och S-Log2. Den säljbara produkten. | Två lookpaket byggda (249 och 149 kr). Inte sålda. | Betallänk och licensuppgifter, efter Donkeys ja. |
 | **Donkey Looks** | `projekt\donkey-looks` | Gemensamma .cube-looks. | I bruk. | – |
 | **Donkey Panel** | `projekt\donkey-panel` | VEGAS 15-tillägg med LUT och AI-knappar. Här finns även Suno-promptar och intro_motor. | Cirka 85 %, med kända fel. | Läsa looks från donkey-looks. Laga "Matcha klipp". |
+| **Donkey Hub** | `projekt\donkey-hub` | Planerad sammanslagning av Cowork och God Mode. | Inte påbörjad ("minimal och sist"). | Efter inkomstprojekten. Holger godkänner säkerheten. |
 | **God Mode** | `projekt\god-mode` | Sökning, media, dubbletter och diskkarta (port 8768). | Cirka 80 %. | Slås ihop med Cowork till Donkey Hub. |
 | **Donkey Lyrics** | `projekt\donkey-lyrics` | Sångtexter bredvid varje mp3 (port 8769). | Klar. | Flik i Donkey Hub. |
 | **Ljudbrädan** | `projekt\ljudbraedan` | 264 egna ljud (port 8766). | Klar. | Flik i Donkey Hub. |

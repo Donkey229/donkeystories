@@ -133,8 +133,17 @@ function Expandera([string]$Sokvag) {
     return $s
 }
 
+# Läser text som UTF-8. Är filen sparad i Windows gamla teckenkodning (ANSI) läses den som det,
+# så att å, ä och ö inte förstörs när filen skrivs tillbaka.
 function Las-Text([string]$Fil) {
-    return [System.IO.File]::ReadAllText($Fil, [System.Text.Encoding]::UTF8)
+    $byte = [System.IO.File]::ReadAllBytes($Fil)
+    try {
+        $text = (New-Object System.Text.UTF8Encoding($false, $true)).GetString($byte)
+    } catch {
+        $text = [System.Text.Encoding]::Default.GetString($byte)
+    }
+    if ($text.Length -gt 0 -and $text[0] -eq [char]0xFEFF) { $text = $text.Substring(1) }
+    return $text
 }
 
 function Skriv-Text([string]$Fil, [string]$Text) {
@@ -196,6 +205,7 @@ function Uppdatera-Block([string]$Fil, [string]$Block, [bool]$ErsattBefintligt) 
 
 # Målmappar som bara innehåller vår CLAUDE.md (från en tidigare körning) töms innan
 # en projektmapp flyttas eller klonas dit. Texten sparas och läggs tillbaka efteråt.
+# Texten säkerhetskopieras alltid till disk först, och mappen tas bara bort om den är tom.
 function Ta-Undan-Claude([string]$ProjektMapp) {
     if ($Provkorning -or -not (Test-Path -LiteralPath $ProjektMapp)) { return $null }
     if (Ar-Lank $ProjektMapp) { throw "Målmappen $ProjektMapp är en länk och rörs inte." }
@@ -203,21 +213,31 @@ function Ta-Undan-Claude([string]$ProjektMapp) {
     if ($ovrigt.Count -gt 0) { throw "Målmappen $ProjektMapp är inte tom." }
     $text = $null
     $fil = Join-Path $ProjektMapp 'CLAUDE.md'
-    if (Test-Path -LiteralPath $fil) { $text = Las-Text $fil }
-    Remove-Item -LiteralPath $ProjektMapp -Recurse -Force
+    if (Test-Path -LiteralPath $fil) {
+        $text = Las-Text $fil
+        Sakerhetskopiera $fil
+        Remove-Item -LiteralPath $fil -Force
+    }
+    try {
+        [System.IO.Directory]::Delete($ProjektMapp, $false)
+    } catch {
+        if ($text) { Skriv-Text $fil $text }
+        throw "Målmappen $ProjektMapp används av ett program (är Claude eller Utforskaren öppen där?)."
+    }
     return $text
 }
 
+# Lägger tillbaka texten som Ta-Undan-Claude sparade. Har projektet en egen CLAUDE.md läggs hela
+# den sparade texten till sist i den, så att inga anteckningar försvinner.
 function Aterstall-Claude([string]$ProjektMapp, [string]$Sparad) {
-    if ($Provkorning -or -not $Sparad) { return }
+    if ($Provkorning -or -not $Sparad -or -not $Sparad.Trim()) { return }
     $fil = Join-Path $ProjektMapp 'CLAUDE.md'
+    if (-not (Test-Path -LiteralPath $ProjektMapp)) { New-Item -ItemType Directory -Path $ProjektMapp -Force | Out-Null }
     if (-not (Test-Path -LiteralPath $fil)) { Skriv-Text $fil $Sparad; return }
-    # Projektet har en egen CLAUDE.md: lägg till vårt block i den i stället.
-    $i = $Sparad.IndexOf($BlockStart)
-    $j = $Sparad.IndexOf($BlockSlut)
-    $innehall = $Sparad
-    if ($i -ge 0 -and $j -gt $i) { $innehall = $Sparad.Substring($i + $BlockStart.Length, $j - $i - $BlockStart.Length) }
-    [void](Uppdatera-Block $fil $innehall $false)
+    $nu = Las-Text $fil
+    if ($nu.Contains($Sparad.Trim())) { return }
+    Sakerhetskopiera $fil
+    Skriv-Text $fil ($nu.TrimEnd() + "`n`n## Anteckningar från C:\Donkeystories (skrivna innan projektet flyttades hit)`n`n" + $Sparad.Trim() + "`n")
 }
 
 function Beskriv-Storlek([string]$Sokvag) {
@@ -328,48 +348,46 @@ function Skapa-Genvag([string]$Genvag, [string]$Mal) {
 # Program som håller projektmappar öppna gör att de inte går att flytta.
 # Lokala Python-servrar (Donkey Cowork, God Mode, Lyrics, Ljudbrädan ...) kan stängas automatiskt
 # och startas igen med sina genvägar efteråt. Allt annat får användaren stänga själv.
+# Returnerar $false om Claude fortfarande körs; då flyttas ingenting.
 function Stang-Program-Som-Laser {
-    if (-not $PaWindows) { return }
-    [void](Vanta-Pa-Stangd-Claude 'Mappar som Claude arbetar i kan inte flyttas medan Claude är igång.')
-    $python = @(Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match '^(python|pythonw|py|pyw)\d*(\.\d+)?$' })
-    if ($python.Count -gt 0) {
-        Skriv-Info "$($python.Count) Python-program körs (troligen lokala Donkey-servrar som Cowork, God Mode och Lyrics)."
-        if (Fraga 'Stänga dem under flytten? (starta dem igen med genvägarna efteråt)' $true) {
-            foreach ($pr in $python) { try { Stop-Process -Id $pr.Id -Force -ErrorAction Stop } catch { } }
-            Start-Sleep -Seconds 2
-            Skriv-Klart 'Stängde lokala Python-servrar. Starta dem igen med genvägarna när skriptet är klart.'
-        }
-    }
+    if (-not $PaWindows) { return $true }
+    if (-not (Vanta-Pa-Stangd-Claude 'Mappar som Claude arbetar i kan inte flyttas medan Claude är igång.')) { return $false }
     $redigerare = @(Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match '^(vegas\d*|Cubase.*|Code|Resolve|Premiere.*|Audacity|Reaper)$' })
     if ($redigerare.Count -gt 0 -and -not $Ja) {
         $namn = ($redigerare | ForEach-Object { $_.ProcessName } | Select-Object -Unique) -join ', '
-        Skriv-Varning "Dessa program är öppna: $namn. Spara och stäng dem om de använder en projektmapp."
+        Skriv-Info "Dessa program är öppna: $namn. Spara och stäng dem om de använder en projektmapp."
         [void](Read-Host '  Tryck Enter för att fortsätta')
     }
+    return $true
 }
 
+function Python-Program {
+    if (-not $PaWindows) { return @() }
+    return @(Get-Process -ErrorAction SilentlyContinue | Where-Object { $_.ProcessName -match '^(python|pythonw|py|pyw)\d*(\.\d+)?$' })
+}
+
+# Returnerar 'ok', 'upptagen' (mappen används av ett program) eller 'fel'.
 function Flytta-Mapp([string]$Fran, [string]$Till) {
-    if ($Provkorning) { Skriv-Prov "skulle flytta $Fran -> $Till"; return $true }
-    $iOneDrive = $OneDriveRot -and (Ar-Inuti $Fran $OneDriveRot)
-    if (-not $iOneDrive) {
+    if ($Provkorning) { Skriv-Prov "skulle flytta $Fran -> $Till"; return 'ok' }
+    if (-not (I-OneDrive $Fran)) {
         # Samma disk: ett namnbyte, går direkt även för stora mappar.
         try {
             Move-Item -LiteralPath $Fran -Destination $Till
-            return $true
+            return 'ok'
         } catch {
-            Skriv-Varning "Kunde inte flytta $Fran ($($_.Exception.Message)). Är mappen öppen i något program (Claude, Donkey Cowork, Cubase, VEGAS, Utforskaren)? Stäng det och kör skriptet igen."
-            return $false
+            Skriv-Info "Kunde inte flytta $Fran just nu ($($_.Exception.Message))."
+            return 'upptagen'
         }
     }
     if (-not $PaWindows) {
         Skriv-Varning "OneDrive-flytt stöds bara på Windows: $Fran"
-        return $false
+        return 'fel'
     }
     # Robocopy /MOVE följer länkar och skulle flytta filerna länken pekar på. Mappar med länkar flyttas inte.
     $lankar = @(Get-ChildItem -LiteralPath $Fran -Recurse -Force -Directory -ErrorAction SilentlyContinue | Where-Object { Ar-Lank $_.FullName })
     if ($lankar.Count -gt 0) {
         Skriv-Varning "$Fran innehåller länkar ($($lankar[0].FullName)) och flyttas inte automatiskt. Flytta den för hand."
-        return $false
+        return 'fel'
     }
     # OneDrive: kopiera fil för fil och radera originalet efter varje lyckad kopia.
     # Robocopy laddar ner filer som bara finns i molnet innan de kopieras.
@@ -386,10 +404,10 @@ function Flytta-Mapp([string]$Fran, [string]$Till) {
     }
     if ($kod -ge 8 -or $kvar -gt 0) {
         Skriv-Varning "Allt kunde inte flyttas från $Fran ($kvar filer kvar, robocopy-kod $kod). Det som flyttats ligger i $Till. Kör skriptet igen så fortsätter flytten dit."
-        return $false
+        return 'fel'
     }
     Remove-Item -LiteralPath $markor -Force -ErrorAction SilentlyContinue
-    return $true
+    return 'ok'
 }
 
 # ---------------------------------------------------------------------------
@@ -438,13 +456,29 @@ try {
 # ---------------------------------------------------------------------------
 Skriv-Rubrik '2. Letar efter projektmappar på datorn'
 
-$OneDriveRot = if ($env:OneDrive) { Normalisera $env:OneDrive } else { $null }
+# Alla OneDrive-konton (privat och jobb) räknas, inte bara det i $env:OneDrive.
+$OneDriveRotter = New-Object System.Collections.Generic.List[string]
+foreach ($r in @($env:OneDrive, $env:OneDriveConsumer, $env:OneDriveCommercial)) {
+    $n = Normalisera $r
+    if ($n -and -not ($OneDriveRotter -contains $n)) { $OneDriveRotter.Add($n) }
+}
+if ($PaWindows -and (Ar-Samma $Hem $env:USERPROFILE)) {
+    foreach ($konto in @(Get-ChildItem -Path 'HKCU:\Software\Microsoft\OneDrive\Accounts' -ErrorAction SilentlyContinue)) {
+        $n = Normalisera ([string](Get-ItemProperty -Path $konto.PSPath -ErrorAction SilentlyContinue).UserFolder)
+        if ($n -and -not ($OneDriveRotter -contains $n)) { $OneDriveRotter.Add($n) }
+    }
+}
+$OneDriveRot = if ($OneDriveRotter.Count -gt 0) { $OneDriveRotter[0] } else { $null }
+function I-OneDrive([string]$Sokvag) {
+    foreach ($r in $OneDriveRotter) { if (Ar-Inuti $Sokvag $r) { return $true } }
+    return $false
+}
 $Skyddade = New-Object System.Collections.Generic.List[string]
-foreach ($s in @($Hem, $OneDriveRot, $ClaudeMapp, $Mapp, $Kalla, $env:SystemRoot, $env:ProgramFiles, ${env:ProgramFiles(x86)}, $env:ProgramData, $env:APPDATA, $env:LOCALAPPDATA, $env:TEMP)) {
+foreach ($s in @(@($Hem, $ClaudeMapp, $Mapp, $Kalla, $env:SystemRoot, $env:ProgramFiles, ${env:ProgramFiles(x86)}, $env:ProgramData, $env:APPDATA, $env:LOCALAPPDATA, $env:TEMP) + @($OneDriveRotter))) {
     $n = Normalisera $s
     if ($n) { $Skyddade.Add($n) }
 }
-foreach ($bas in @($Hem, $OneDriveRot)) {
+foreach ($bas in @(@($Hem) + @($OneDriveRotter))) {
     if (-not $bas) { continue }
     foreach ($namn in @('Desktop', 'Skrivbord', 'Documents', 'Dokument', 'Downloads', 'Hämtade filer', 'Music', 'Musik', 'Pictures', 'Bilder', 'Videos', 'Videor', 'Filmer', 'source', 'repos', 'Projects', 'Projekt')) {
         $Skyddade.Add((Join-Path $bas $namn))
@@ -509,6 +543,14 @@ foreach ($rot in @($ProjektRot, $ArkivRot)) {
     }
 }
 
+# En mapp som själv inte är ett repo men innehåller flera repon (t.ex. Dokument\GitHub) är ingen
+# projektmapp. Repona i den hittas och flyttas var för sig.
+function Ar-Samlingsmapp([string]$Sokvag) {
+    if (Test-Path -LiteralPath (Join-Path $Sokvag '.git')) { return $false }
+    $repon = @(Get-ChildItem -LiteralPath $Sokvag -Directory -Recurse -Depth 2 -Force -Filter '.git' -ErrorAction SilentlyContinue)
+    return ($repon.Count -ge 2)
+}
+
 $Kandidater = @{}   # sökväg -> objekt
 function Lagg-Till-Kandidat([string]$Sokvag, [string]$Kalltyp, [string]$Projektnamn) {
     $n = Normalisera $Sokvag
@@ -523,6 +565,7 @@ function Lagg-Till-Kandidat([string]$Sokvag, [string]$Kalltyp, [string]$Projektn
     }
     if (-not (Far-Flyttas $n)) { return }
     if ($RedanLankade.ContainsKey($nyckel)) { return }
+    if (Ar-Samlingsmapp $n) { return }
     $Kandidater[$nyckel] = [pscustomobject]@{ Sokvag = $n; Kallor = @($Kalltyp); Projekt = $Projektnamn }
 }
 
@@ -560,7 +603,7 @@ foreach ($p in $Projektlista) {
     }
 }
 $SokRotter = New-Object System.Collections.Generic.List[string]
-foreach ($bas in @($Hem, $OneDriveRot)) {
+foreach ($bas in @(@($Hem) + @($OneDriveRotter))) {
     if (-not $bas) { continue }
     foreach ($namn in @('Desktop', 'Skrivbord', 'Documents', 'Dokument', 'source', 'repos', 'Projects', 'Projekt', 'GitHub')) {
         $r = Join-Path $bas $namn
@@ -615,6 +658,70 @@ $Sorterade = @($AllaKandidater | Where-Object {
     $barn = $_
     -not ($AllaKandidater | Where-Object { $_ -ne $barn -and (Ar-Inuti $barn.Sokvag $_.Sokvag) })
 })
+
+# Flyttar (eller länkar) en kandidat. Returnerar 'ok', 'hoppad', 'upptagen' eller 'fel'.
+function Hantera-Kandidat($k, [bool]$RedanGodkand) {
+    if (-not (Test-Path -LiteralPath $k.Sokvag)) { return 'hoppad' }
+    $namn = if ($k.Projekt) { $k.Projekt } else { Split-Path -Leaf $k.Sokvag }
+    $malRot = $ProjektRot
+    if ($k.Projekt -and $ArkivNamn.ContainsKey($k.Projekt.ToLowerInvariant())) { $malRot = $ArkivRot }
+    $mal = Join-Path $malRot $namn
+    $nr = 2
+    $fortsatter = $false
+    while ((Test-Path -LiteralPath $mal) -and @(Get-ChildItem -LiteralPath $mal -Force -ErrorAction SilentlyContinue).Count -gt 0) {
+        # En avbruten flytt av just den här mappen fortsätter i samma målmapp.
+        $markor = Join-Path $mal $FlyttMarkor
+        if ((Test-Path -LiteralPath $markor) -and (Ar-Samma (Las-Text $markor).Trim() $k.Sokvag)) { $fortsatter = $true; break }
+        # En mapp med bara vår CLAUDE.md (från en tidigare körning) räknas inte som upptagen.
+        $ovrigt = @(Get-ChildItem -LiteralPath $mal -Force) | Where-Object { $_.Name -ne 'CLAUDE.md' }
+        if (@($ovrigt).Count -eq 0 -and -not (Ar-Lank $mal)) { break }
+        $mal = Join-Path $malRot "$namn-$nr"; $nr++
+    }
+    $iOneDrive = I-OneDrive $k.Sokvag
+    $annanDisk = -not (Ar-Samma ([System.IO.Path]::GetPathRoot($k.Sokvag)) ([System.IO.Path]::GetPathRoot($Mapp)))
+    if (-not $RedanGodkand) {
+        Write-Host ''
+        Skriv-Info "$($k.Sokvag)  –  $(Beskriv-Storlek $k.Sokvag)"
+    }
+    if ($annanDisk) {
+        # Filerna ligger kvar och skrivs aldrig till. Projektmappen i C:\Donkeystories blir en vanlig
+        # mapp (för CLAUDE.md) med en länk inuti som pekar till den andra disken.
+        $lank = Join-Path $mal (Split-Path -Leaf $k.Sokvag)
+        # Bara kända projekt (t.ex. E:\Musik) föreslås. Andra mappar på andra diskar kan vara privata.
+        $kand = $k.Kallor -contains 'känd plats'
+        if (-not (Fraga "Ligger på en annan disk. Lägga en länk till den i $lank (filerna ligger kvar där de är)?" $kand)) { return 'hoppad' }
+        Skapa-Mapp $mal
+        if (-not (Skapa-Lank $lank $k.Sokvag)) { return 'fel' }
+        $Flyttade.Add([pscustomobject]@{ Fran = $k.Sokvag; Till = $lank; Projektmapp = $mal })
+        Skriv-Klart "Länkade $lank -> $($k.Sokvag)"
+        return 'ok'
+    }
+    if (-not $RedanGodkand) {
+        if ($iOneDrive) { Skriv-Info 'Mappen ligger i OneDrive. Efter flytten säkerhetskopieras den inte längre av OneDrive.' }
+        if ($fortsatter) { Skriv-Info "En tidigare flytt hit avbröts. Den fortsätter nu i $mal." }
+        if (-not (Fraga "Flytta till $mal ?" $true)) { return 'hoppad' }
+    }
+    # Finns bara vår CLAUDE.md från en tidigare körning i målmappen sparas den och läggs tillbaka efter flytten.
+    $sparadClaude = $null
+    if (-not $fortsatter) {
+        try { $sparadClaude = Ta-Undan-Claude $mal } catch { Skriv-Varning "$($_.Exception.Message) Hoppar över $($k.Sokvag)."; return 'fel' }
+    }
+    $status = Flytta-Mapp $k.Sokvag $mal
+    if ($status -eq 'ok') {
+        $Flyttade.Add([pscustomobject]@{ Fran = $k.Sokvag; Till = $mal; Projektmapp = $mal })
+        Skriv-Klart "Flyttade $($k.Sokvag) -> $mal"
+        if (-not (Test-Path -LiteralPath $k.Sokvag)) {
+            if ($iOneDrive) {
+                Skapa-Genvag "$($k.Sokvag).lnk" $mal
+            } elseif (Skapa-Lank $k.Sokvag $mal) {
+                Skriv-Info "Den gamla platsen $($k.Sokvag) pekar nu till $mal"
+            }
+        }
+    }
+    Aterstall-Claude $mal $sparadClaude
+    return $status
+}
+
 if ($Sorterade.Count -eq 0) {
     Skriv-Info 'Hittade inga projektmappar utanför C:\Donkeystories.'
 } else {
@@ -630,60 +737,33 @@ if ($Sorterade.Count -eq 0) {
     Skriv-Info 'genvägar, schemalagda uppgifter och program (t.ex. Donkey Cowork) fortsätter hitta den.'
     Skriv-Info 'OneDrive: mappen flyttas ut ur OneDrive, och en genväg lämnas där den låg.'
     Skriv-Info 'Annan disk (t.ex. E:): filerna ligger kvar där. En länk läggs i C:\Donkeystories\projekt.'
-    if (-not $Provkorning) { Stang-Program-Som-Laser }
-    foreach ($k in $Sorterade) {
-        if (-not (Test-Path -LiteralPath $k.Sokvag)) { continue }
-        $namn = if ($k.Projekt) { $k.Projekt } else { Split-Path -Leaf $k.Sokvag }
-        $malRot = $ProjektRot
-        if ($k.Projekt -and $ArkivNamn.ContainsKey($k.Projekt.ToLowerInvariant())) { $malRot = $ArkivRot }
-        $mal = Join-Path $malRot $namn
-        $nr = 2
-        $fortsatter = $false
-        while ((Test-Path -LiteralPath $mal) -and @(Get-ChildItem -LiteralPath $mal -Force -ErrorAction SilentlyContinue).Count -gt 0) {
-            # En avbruten flytt av just den här mappen fortsätter i samma målmapp.
-            $markor = Join-Path $mal $FlyttMarkor
-            if ((Test-Path -LiteralPath $markor) -and (Ar-Samma (Las-Text $markor).Trim() $k.Sokvag)) { $fortsatter = $true; break }
-            # En mapp med bara vår CLAUDE.md (från en tidigare körning) räknas inte som upptagen.
-            $ovrigt = @(Get-ChildItem -LiteralPath $mal -Force) | Where-Object { $_.Name -ne 'CLAUDE.md' }
-            if (@($ovrigt).Count -eq 0 -and -not (Ar-Lank $mal)) { break }
-            $mal = Join-Path $malRot "$namn-$nr"; $nr++
+    $KanFlytta = $true
+    if (-not $Provkorning) { $KanFlytta = Stang-Program-Som-Laser }
+    if (-not $KanFlytta) {
+        Skriv-Varning 'Claude körs fortfarande, så inga mappar flyttades. Avsluta Claude helt och kör skriptet igen.'
+    } else {
+        $Upptagna = New-Object System.Collections.Generic.List[object]
+        foreach ($k in $Sorterade) {
+            if ((Hantera-Kandidat $k $false) -eq 'upptagen') { $Upptagna.Add($k) }
         }
-        $iOneDrive = $OneDriveRot -and (Ar-Inuti $k.Sokvag $OneDriveRot)
-        $annanDisk = -not (Ar-Samma ([System.IO.Path]::GetPathRoot($k.Sokvag)) ([System.IO.Path]::GetPathRoot($Mapp)))
-        Write-Host ''
-        Skriv-Info "$($k.Sokvag)  –  $(Beskriv-Storlek $k.Sokvag)"
-        if ($annanDisk) {
-            # Filerna ligger kvar och skrivs aldrig till. Projektmappen i C:\Donkeystories blir en vanlig
-            # mapp (för CLAUDE.md) med en länk inuti som pekar till den andra disken.
-            $lank = Join-Path $mal (Split-Path -Leaf $k.Sokvag)
-            # Bara kända projekt (t.ex. E:\Musik) föreslås. Andra mappar på andra diskar kan vara privata.
-            $kand = $k.Kallor -contains 'känd plats'
-            if (-not (Fraga "Ligger på en annan disk. Lägga en länk till den i $lank (filerna ligger kvar där de är)?" $kand)) { continue }
-            Skapa-Mapp $mal
-            if (Skapa-Lank $lank $k.Sokvag) {
-                $Flyttade.Add([pscustomobject]@{ Fran = $k.Sokvag; Till = $lank; Projektmapp = $mal })
-                Skriv-Klart "Länkade $lank -> $($k.Sokvag)"
-            }
-            continue
-        }
-        if ($iOneDrive) { Skriv-Info 'Mappen ligger i OneDrive. Efter flytten säkerhetskopieras den inte längre av OneDrive.' }
-        if ($fortsatter) { Skriv-Info "En tidigare flytt hit avbröts. Den fortsätter nu i $mal." }
-        if (-not (Fraga "Flytta till $mal ?" $true)) { continue }
-        # Finns bara vår CLAUDE.md från en tidigare körning i målmappen sparas den och läggs tillbaka efter flytten.
-        $sparadClaude = $null
-        if (-not $fortsatter) { $sparadClaude = Ta-Undan-Claude $mal }
-        if (Flytta-Mapp $k.Sokvag $mal) {
-            $Flyttade.Add([pscustomobject]@{ Fran = $k.Sokvag; Till = $mal; Projektmapp = $mal })
-            Skriv-Klart "Flyttade $($k.Sokvag) -> $mal"
-            if (-not (Test-Path -LiteralPath $k.Sokvag)) {
-                if ($iOneDrive) {
-                    Skapa-Genvag "$($k.Sokvag).lnk" $mal
-                } elseif (Skapa-Lank $k.Sokvag $mal) {
-                    Skriv-Info "Den gamla platsen $($k.Sokvag) pekar nu till $mal"
+        if ($Upptagna.Count -gt 0) {
+            Write-Host ''
+            Skriv-Info "$($Upptagna.Count) mappar används just nu av ett program och kunde inte flyttas."
+            $python = @(Python-Program)
+            if ($python.Count -gt 0 -and (Fraga "$($python.Count) Python-program körs (troligen lokala Donkey-servrar som Cowork, God Mode och Lyrics). Stänga dem och försöka igen? (starta dem sedan med genvägarna)" (-not $Ja))) {
+                foreach ($pr in $python) { try { Stop-Process -Id $pr.Id -Force -ErrorAction Stop } catch { } }
+                Start-Sleep -Seconds 2
+                Skriv-Klart 'Stängde lokala Python-servrar. Starta dem igen med genvägarna när skriptet är klart.'
+                $kvarUpptagna = New-Object System.Collections.Generic.List[object]
+                foreach ($k in $Upptagna) {
+                    if ((Hantera-Kandidat $k $true) -eq 'upptagen') { $kvarUpptagna.Add($k) }
                 }
+                $Upptagna = $kvarUpptagna
+            }
+            foreach ($k in $Upptagna) {
+                Skriv-Varning "Kunde inte flytta $($k.Sokvag): mappen används av ett program (t.ex. Cubase, VEGAS, Utforskaren eller en server). Stäng det och kör skriptet igen."
             }
         }
-        Aterstall-Claude $mal $sparadClaude
     }
 }
 
@@ -727,7 +807,7 @@ if (-not $Git) {
             if (-not $hamtaArkiv) { continue }
         } elseif (-not (Fraga "Hämta $($p.repo) till $mal?" $true)) { continue }
         if ($Provkorning) { Skriv-Prov "skulle köra: git clone $($p.repo) $mal"; continue }
-        $sparadClaude = Ta-Undan-Claude $mal
+        try { $sparadClaude = Ta-Undan-Claude $mal } catch { Skriv-Varning "$($_.Exception.Message) Hoppar över $($p.repo)."; continue }
         & git clone --quiet $p.repo $mal
         if ($LASTEXITCODE -eq 0) {
             Skriv-Klart "Hämtade $($p.repo) -> $mal"
@@ -814,6 +894,7 @@ if ($NyaRader.Count -gt 0) {
     if (Test-Path -LiteralPath $projektFil) {
         $text = Las-Text $projektFil
         $tillagg = "`n## Hittade på datorn vid installationen $Idag`n`n| Projekt | Mapp | GitHub | Live | Anteckning |`n|---|---|---|---|---|`n" + ($NyaRader -join "`n") + "`n"
+        Sakerhetskopiera $projektFil
         Skriv-Text $projektFil ($text.TrimEnd() + "`n" + $tillagg)
     }
 }
@@ -855,28 +936,47 @@ if ($arLank) {
     if ($Provkorning) {
         Skriv-Prov "skulle flytta $ClaudeProjekt -> $HistorikMapp och skapa en länk"
     } elseif (Vanta-Pa-Stangd-Claude 'Historiken kan inte flyttas medan Claude skriver i den.') {
+        $flyttadHela = $false
         try {
             Skapa-Mapp (Split-Path -Parent (Split-Path -Parent $HistorikMapp))
             Skapa-Mapp (Split-Path -Parent $HistorikMapp)
             if (-not (Test-Path -LiteralPath $ClaudeProjekt)) {
                 Skapa-Mapp $HistorikMapp
-            } elseif (-not (Test-Path -LiteralPath $HistorikMapp)) {
-                if (Ar-Samma ([System.IO.Path]::GetPathRoot($ClaudeProjekt)) ([System.IO.Path]::GetPathRoot($HistorikMapp))) {
-                    Move-Item -LiteralPath $ClaudeProjekt -Destination $HistorikMapp
-                } else {
-                    & robocopy.exe $ClaudeProjekt $HistorikMapp /E /MOVE /COPY:DAT /R:2 /W:2 /NP /NFL /NDL /NJH /NJS | Out-Null
-                    if ($LASTEXITCODE -ge 8) { throw "robocopy felkod $LASTEXITCODE" }
-                }
+            } elseif (-not (Test-Path -LiteralPath $HistorikMapp) -and (Ar-Samma ([System.IO.Path]::GetPathRoot($ClaudeProjekt)) ([System.IO.Path]::GetPathRoot($HistorikMapp)))) {
+                # Vanligaste fallet: ett namnbyte på samma disk.
+                Move-Item -LiteralPath $ClaudeProjekt -Destination $HistorikMapp
+                $flyttadHela = $true
             } else {
-                & robocopy.exe $ClaudeProjekt $HistorikMapp /E /MOVE /COPY:DAT /R:2 /W:2 /XC /XN /XO /NP /NFL /NDL /NJH /NJS | Out-Null
-                if ($LASTEXITCODE -ge 8) { throw "robocopy felkod $LASTEXITCODE" }
-                if (Test-Path -LiteralPath $ClaudeProjekt) {
-                    $kvar = @(Get-ChildItem -LiteralPath $ClaudeProjekt -Recurse -Force -File -ErrorAction SilentlyContinue).Count
-                    if ($kvar -gt 0) { throw "$kvar filer finns kvar i $ClaudeProjekt" }
-                    Remove-Item -LiteralPath $ClaudeProjekt -Recurse -Force
+                # Historikmappen finns redan (en tidigare körning) eller ligger på en annan disk:
+                # flytta fil för fil. Finns en fil redan med annat innehåll sparas den nya med ett eget namn.
+                Skapa-Mapp $HistorikMapp
+                foreach ($fil in @(Get-ChildItem -LiteralPath $ClaudeProjekt -Recurse -Force -File -ErrorAction Stop)) {
+                    $relativ = $fil.FullName.Substring($ClaudeProjekt.Length).TrimStart('\', '/')
+                    $malFil = Join-Path $HistorikMapp $relativ
+                    $malMapp = Split-Path -Parent $malFil
+                    if (-not (Test-Path -LiteralPath $malMapp)) { New-Item -ItemType Directory -Path $malMapp -Force | Out-Null }
+                    if (Test-Path -LiteralPath $malFil) {
+                        $samma = ((Get-Item -LiteralPath $malFil -Force).Length -eq $fil.Length) -and ((Get-FileHash -LiteralPath $malFil).Hash -eq (Get-FileHash -LiteralPath $fil.FullName).Hash)
+                        if (-not $samma) { $malFil = "$malFil.fran-$Tidsstampel" }
+                        else { Remove-Item -LiteralPath $fil.FullName -Force; continue }
+                    }
+                    Move-Item -LiteralPath $fil.FullName -Destination $malFil
                 }
+                $kvar = @(Get-ChildItem -LiteralPath $ClaudeProjekt -Recurse -Force -File -ErrorAction SilentlyContinue).Count
+                if ($kvar -gt 0) { throw "$kvar filer finns kvar i $ClaudeProjekt" }
+                # Ta bort de nu tomma mapparna, djupast först, utan att följa länkar.
+                foreach ($d in @(Get-ChildItem -LiteralPath $ClaudeProjekt -Recurse -Force -Directory -ErrorAction SilentlyContinue | Sort-Object { $_.FullName.Length } -Descending)) {
+                    [System.IO.Directory]::Delete($d.FullName, $false)
+                }
+                [System.IO.Directory]::Delete($ClaudeProjekt, $false)
             }
-            New-Item -ItemType Junction -Path $ClaudeProjekt -Target $HistorikMapp | Out-Null
+            try {
+                New-Item -ItemType Junction -Path $ClaudeProjekt -Target $HistorikMapp | Out-Null
+            } catch {
+                # Kunde länken inte skapas läggs historiken tillbaka direkt, så att Claude hittar den som förut.
+                if ($flyttadHela -and -not (Test-Path -LiteralPath $ClaudeProjekt)) { Move-Item -LiteralPath $HistorikMapp -Destination $ClaudeProjekt }
+                throw
+            }
             Skriv-Klart "Alla Claude Code-chattar sparas nu i $HistorikMapp"
         } catch {
             Skriv-Varning "Kunde inte flytta sessionshistoriken: $($_.Exception.Message). Inget är förlorat – kör skriptet igen när Claude är stängt."
@@ -959,6 +1059,12 @@ if (-not (Ar-Inuti $Kalla $verktyg)) {
     if ($Provkorning) {
         Skriv-Prov "skulle kopiera installationsfilerna till $verktyg"
     } else {
+        if (Test-Path -LiteralPath $verktyg) {
+            # Den gamla kopian (som kan vara ändrad, t.ex. projekt.json) sparas innan den ersätts.
+            $gammal = Join-Path (Join-Path (Join-Path $Mapp 'verktyg') 'sakerhetskopior') (Join-Path $Tidsstampel 'installation')
+            New-Item -ItemType Directory -Path (Split-Path -Parent $gammal) -Force | Out-Null
+            Copy-Item -LiteralPath $verktyg -Destination $gammal -Recurse -Force
+        }
         Skapa-Mapp $verktyg
         foreach ($namn in @('installera.ps1', 'installera.cmd', 'projekt.json', 'README.md', 'mall')) {
             $kallFil = Join-Path $Kalla $namn
