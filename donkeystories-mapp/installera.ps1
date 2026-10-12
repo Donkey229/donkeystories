@@ -476,8 +476,25 @@ if (-not $Provkorning -and -not $Ja) {
 # ---------------------------------------------------------------------------
 Skriv-Rubrik '1. Skapar mappstrukturen'
 $MappFanns = Test-Path -LiteralPath $Mapp
-foreach ($under in @('', 'projekt', 'sessioner', (Join-Path 'sessioner' 'logg'), 'anteckningar', 'arkiv', 'verktyg')) {
-    Skapa-Mapp (Join-Path $Mapp $under)
+$AtkomstFel = $null
+$Undermappar = @('', 'projekt', 'sessioner', (Join-Path 'sessioner' 'logg'), 'anteckningar', 'arkiv', 'verktyg')
+try {
+    foreach ($under in $Undermappar) { Skapa-Mapp (Join-Path $Mapp $under) }
+} catch { $AtkomstFel = $_.Exception.Message }
+if (-not $AtkomstFel -and -not $Provkorning) {
+    foreach ($under in $Undermappar) {
+        if (-not (Test-Path -LiteralPath (Join-Path $Mapp $under) -PathType Container)) { $AtkomstFel = "$(Join-Path $Mapp $under) gick inte att skapa eller öppna."; break }
+    }
+}
+if ($AtkomstFel) {
+    # Händer om mappen skapades från ett annat Windows-konto med svaret "bara mitt konto".
+    Write-Host ''
+    Write-Host "  Ditt Windows-konto ($env:USERNAME) kommer inte åt $Mapp." -ForegroundColor Red
+    Write-Host '  Mappen har troligen låsts till ett annat konto på den här datorn. Logga in på det kontot,'
+    Write-Host "  högerklicka på $Mapp -> Egenskaper -> Säkerhet -> Redigera, lägg till ditt konto med Fullständig behörighet"
+    Write-Host '  och kör skriptet igen härifrån.'
+    Write-Host "  (Felet var: $AtkomstFel)"
+    exit 1
 }
 $Logg = Join-Path (Join-Path $Mapp 'sessioner') "installationslogg-$Tidsstampel.txt"
 $Transkript = $false
@@ -487,7 +504,8 @@ if (-not $Provkorning) {
 Skriv-Klart "Mappstrukturen finns i $Mapp"
 # En mapp direkt under C:\ kan annars läsas och ändras av alla Windows-konton på datorn.
 if (-not $MappFanns -and $PaWindows -and -not $Provkorning) {
-    if (Fraga "Ska bara ditt Windows-konto ($env:USERNAME) kunna se $Mapp? (svara n om ett annat konto på samma dator också ska använda mappen)" $true) {
+    # Standard nej: ett annat Windows-konto på samma dator ska kunna köra skriptet och använda mappen.
+    if (Fraga "Ska bara ditt Windows-konto ($env:USERNAME) kunna se $Mapp? Svara nej om du har fler Windows-konton på den här datorn som använder Claude." $false) {
         try {
             $sid = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
             $tidigare = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
