@@ -316,17 +316,23 @@ function Under-Lank([string]$Sokvag) {
 }
 
 # Skapar en länk (junction) på $Lank som pekar till $Mal. På Linux (bara vid test) blir det en symbolisk länk.
+# På Windows används mklink /J, eftersom New-Item tolkar [ och ] i mappnamn som jokertecken.
 function Skapa-Lank([string]$Lank, [string]$Mal) {
     if ($Provkorning) { Skriv-Prov "skulle skapa länken $Lank -> $Mal"; return $true }
     try {
         if ($PaWindows) {
-            New-Item -ItemType Junction -Path $Lank -Target $Mal | Out-Null
+            # Varje sökväg skickas som ett eget argument inom citattecken (klarar mellanslag, & och [ ]).
+            $tidigare = $ErrorActionPreference
+            $ErrorActionPreference = 'Continue'
+            try { $utdata = & cmd.exe /d /c mklink /J "`"$Lank`"" "`"$Mal`"" 2>&1 } finally { $ErrorActionPreference = $tidigare }
+            if ($LASTEXITCODE -ne 0) { throw ((@($utdata) | ForEach-Object { "$_" }) -join ' ') }
         } else {
             New-Item -ItemType SymbolicLink -Path $Lank -Target $Mal | Out-Null
         }
+        if (-not (Ar-Lank $Lank)) { throw 'länken skapades inte' }
         return $true
     } catch {
-        Skriv-Varning "Kunde inte skapa länken $Lank ($($_.Exception.Message))."
+        Skriv-Varning "Kunde inte skapa länken $Lank -> $Mal ($($_.Exception.Message)). Projektet ligger i $Mal."
         return $false
     }
 }
@@ -553,7 +559,12 @@ function Ar-Samlingsmapp([string]$Sokvag) {
 
 $Kandidater = @{}   # sökväg -> objekt
 function Lagg-Till-Kandidat([string]$Sokvag, [string]$Kalltyp, [string]$Projektnamn) {
+    try { Lagg-Till-Kandidat-Inre $Sokvag $Kalltyp $Projektnamn }
+    catch { Skriv-Info "Hoppar över $Sokvag ($($_.Exception.Message))." }
+}
+function Lagg-Till-Kandidat-Inre([string]$Sokvag, [string]$Kalltyp, [string]$Projektnamn) {
     $n = Normalisera $Sokvag
+    if (-not $n -or -not (Test-Path -LiteralPath $n -PathType Container)) { return }
     if (-not $n) { return }
     $n = Hitta-Gitrot $n
     $nyckel = $n.ToLowerInvariant()
@@ -805,7 +816,7 @@ if (-not $Git) {
         if ($p.arkiv) {
             if ($null -eq $hamtaArkiv) { $hamtaArkiv = Fraga 'Vill du även hämta de gamla, arkiverade repona till arkiv\?' $false }
             if (-not $hamtaArkiv) { continue }
-        } elseif (-not (Fraga "Hämta $($p.repo) till $mal?" $true)) { continue }
+        } elseif (-not (Fraga "Hämta $($p.repo) till ${mal}?" $true)) { continue }
         if ($Provkorning) { Skriv-Prov "skulle köra: git clone $($p.repo) $mal"; continue }
         try { $sparadClaude = Ta-Undan-Claude $mal } catch { Skriv-Varning "$($_.Exception.Message) Hoppar över $($p.repo)."; continue }
         & git clone --quiet $p.repo $mal
@@ -972,12 +983,10 @@ if ($arLank) {
                 }
                 [System.IO.Directory]::Delete($ClaudeProjekt, $false)
             }
-            try {
-                New-Item -ItemType Junction -Path $ClaudeProjekt -Target $HistorikMapp | Out-Null
-            } catch {
+            if (-not (Skapa-Lank $ClaudeProjekt $HistorikMapp)) {
                 # Kunde länken inte skapas läggs historiken tillbaka direkt, så att Claude hittar den som förut.
                 if ($flyttadHela -and -not (Test-Path -LiteralPath $ClaudeProjekt)) { Move-Item -LiteralPath $HistorikMapp -Destination $ClaudeProjekt }
-                throw
+                throw 'länken till historiken kunde inte skapas'
             }
             Skriv-Klart "Alla Claude Code-chattar sparas nu i $HistorikMapp"
         } catch {
