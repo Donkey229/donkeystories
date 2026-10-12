@@ -1,0 +1,33 @@
+{
+  "om": "Projektlistan som installera.ps1 använder. namn = mappnamn i C:\\Donkeystories\\projekt (eller arkiv). kanda_platser = där projektet låg innan. %DOKUMENT% och %SKRIVBORD% är Windows egna mappar (de kan ligga i OneDrive). arkiv = hamnar i C:\\Donkeystories\\arkiv.",
+  "projekt": [
+    {"namn": "donkeystories", "titel": "Donkey Stories – central hemsida", "repo": "https://github.com/Donkey229/donkeystories.git", "kanda_platser": ["%DOKUMENT%\\donkeystories"], "arkiv": false},
+    {"namn": "vlog", "titel": "Vlogg och minnesapp (privat)", "repo": "https://github.com/Donkey229/vlog.git", "kanda_platser": ["%DOKUMENT%\\vlog"], "arkiv": false},
+    {"namn": "vlogg", "titel": "Vloggens arbetsmapp (film, import, site)", "repo": "", "kanda_platser": ["%DOKUMENT%\\vlogg"], "arkiv": false},
+    {"namn": "vlogg-import", "titel": "Vloggens importmapp", "repo": "", "kanda_platser": ["%DOKUMENT%\\vlogg-import"], "arkiv": false},
+    {"namn": "sparly", "titel": "Sparly – ekonomi-app", "repo": "", "kanda_platser": ["%SKRIVBORD%\\sparly", "%OneDrive%\\Skrivbord\\sparly", "%OneDrive%\\Desktop\\sparly", "%USERPROFILE%\\Desktop\\sparly"], "arkiv": false},
+    {"namn": "donkey-cowork", "titel": "Donkey Cowork och Donkey Lab (styrelsen)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-cowork"], "arkiv": false},
+    {"namn": "donkey-film", "titel": "Donkey Film", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-film"], "arkiv": false},
+    {"namn": "musikvideo", "titel": "Musikvideo 4K (Galaxy)", "repo": "", "kanda_platser": ["%DOKUMENT%\\musikvideo"], "arkiv": false},
+    {"namn": "donkey-grading", "titel": "Donkey Grading", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-grading"], "arkiv": false},
+    {"namn": "donkey-looks", "titel": "Donkey Looks (gemensamma LUT-filer)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-looks"], "arkiv": false},
+    {"namn": "donkey-panel", "titel": "Donkey Panel (VEGAS-tillägg)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-panel"], "arkiv": false},
+    {"namn": "god-mode", "titel": "God Mode", "repo": "", "kanda_platser": ["%DOKUMENT%\\god-mode"], "arkiv": false},
+    {"namn": "donkey-lyrics", "titel": "Donkey Lyrics", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-lyrics"], "arkiv": false},
+    {"namn": "ljudbraedan", "titel": "Ljudbrädan", "repo": "", "kanda_platser": ["%DOKUMENT%\\ljudbraedan"], "arkiv": false},
+    {"namn": "donkey-studio", "titel": "Donkey Studio (Cubase AI Panel)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-studio"], "arkiv": false},
+    {"namn": "arbetsorder", "titel": "Arbetsorder", "repo": "", "kanda_platser": ["%DOKUMENT%\\arbetsorder"], "arkiv": false},
+    {"namn": "ai-assistent", "titel": "AI-assistent (Claudes arbetsmapp och lösa skript)", "repo": "", "kanda_platser": ["%DOKUMENT%\\ai-assistent"], "arkiv": false},
+    {"namn": "donkey-musik-utgivning", "titel": "Donkey Music – utgivning av 30 låtar", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-musik-utgivning"], "arkiv": false},
+    {"namn": "donkey-musikbibliotek", "titel": "Donkey Musikbibliotek (musikpaket)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-musikbibliotek"], "arkiv": false},
+    {"namn": "donkey-latvideo", "titel": "Donkey Låtvideo (videotjänst)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-latvideo"], "arkiv": false},
+    {"namn": "donkey-sangare-prov", "titel": "Donkey-sångare (prov)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-sangare-prov"], "arkiv": false},
+    {"namn": "tonjakten", "titel": "Tonjakten (thai-tonspel)", "repo": "", "kanda_platser": ["%DOKUMENT%\\tonjakten"], "arkiv": false},
+    {"namn": "tempelvakten", "titel": "Tempelvakten (spel)", "repo": "", "kanda_platser": ["%DOKUMENT%\\tempelvakten"], "arkiv": false},
+    {"namn": "musik", "titel": "Musikkatalogen (E:\\Musik)", "repo": "", "kanda_platser": ["E:\\Musik"], "arkiv": false},
+    {"namn": "du-och-jag", "titel": "Du&Jag (nedlagd parapp)", "repo": "", "kanda_platser": ["%DOKUMENT%\\arkiv\\du-och-jag", "%DOKUMENT%\\du-och-jag"], "arkiv": true},
+    {"namn": "lackagekollen", "titel": "Läckagekollen (nedlagd)", "repo": "", "kanda_platser": ["%DOKUMENT%\\lackagekollen"], "arkiv": true},
+    {"namn": "donkeystories-gammal", "titel": "Gammal version av hemsidan", "repo": "https://github.com/Donkey229/donkeystories-gammal.git", "kanda_platser": [], "arkiv": true},
+    {"namn": "donkey-website", "titel": "Första hemsidesrepot (bara README)", "repo": "https://github.com/Donkey229/donkey-website.git", "kanda_platser": [], "arkiv": true}
+  ]
+}

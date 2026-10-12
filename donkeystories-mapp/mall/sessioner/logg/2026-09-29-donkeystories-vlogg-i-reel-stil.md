@@ -1,0 +1,14 @@
+# 2026-09-29 – donkeystories: vloggsektion i reel-stil
+- **Var:** moln (från mobilen)
+- **Gjort:**
+  - Byggde en ny vloggsektion på hemsidan i stil med Reels: stående 9:16-klipp, framstegsstaplar, Följ-knapp, rullande ljudrad och långsam zoom, med text på SV/EN/TH.
+  - Pushad till grenen `claude/vlog-styling-04md2i`. Ingen PR.
+  - Skärmbilder för dator och mobil skickades.
+- **Beslut:**
+  - "Ändra inget på GitHub om jag inte säger till."
+  - Visa inga påhittade siffror.
+  - Respektera `prefers-reduced-motion`.
+- **Kvar / nästa steg:**
+  - Donkey bestämmer om sektionen ska in på `main` (via PR), ändras, eller om grenen tas bort.
+  - Riktiga klipp ersätter platshållarna när vloggarna finns på YouTube eller TikTok.
+- **Filer:** GitHub `Donkey229/donkeystories`, grenen `claude/vlog-styling-04md2i`

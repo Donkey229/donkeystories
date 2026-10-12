@@ -1,0 +1,11 @@
+# 2026-09-29 – donkey-studio: mål och spärr (Cubase Donkey, del 2)
+- **Var:** dator (Remote Control)
+- **Gjort:**
+  - Mätte om alla 50 phonk-referenser och skrev mål och spärrar för tio prov.
+  - Byggde om kritiken och loopen. Lagade ett allvarligt fel: loopen skrev över det bästa godkända ljudet.
+  - Slutläge: 1064 tester gröna. 9 av 50 riktiga phonk-låtar klarar proven, mot 0 tidigare.
+- **Beslut:** hård regel 15 i projektets `CLAUDE.md`.
+- **Kvar / nästa steg:**
+  - Donkey svarar på tre gränsbeslut. Föreslaget svar: "46, behåll, höj".
+  - Verktyg att prova, ett i taget: sfizz, beat_this, CLAP, Surge XT, torchcrepe och betyg.
+- **Filer:** `projekt\donkey-studio\` (knowledge\pass_criteria.md, analysis\kritik.py, analysis\loop.py, PROGRESS.md)

@@ -1,0 +1,11 @@
+# 2026-09-28 – donkeystories: central webbplats
+- **Var:** moln (från mobilen)
+- **Gjort:**
+  - Visade hur den centrala hemsidan ser ut, med skärmbilder för dator och mobil.
+  - Förklarade varför donkeystories.com inte fungerade: domänen fanns inte i DNS.
+  - Jämförde med vloggen, som fungerar på github.io.
+- **Beslut:** en egen domän är frivillig. Github.io-adressen räcker tills vidare.
+- **Kvar / nästa steg:**
+  - CNAME har tagits bort från `main` (commit a0381ee), så sidan fungerar på donkey229.github.io/donkeystories.
+  - Köp av domänen är fortfarande öppet.
+- **Filer:** GitHub `Donkey229/donkeystories`

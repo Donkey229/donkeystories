@@ -1,0 +1,9 @@
+# Används bara om C:\Donkeystories görs till ett eget git-repo. Det ska i så fall vara PRIVAT.
+# Projekten har egna repon eller är för stora, chattarna är rådata och
+# säkerhetskopiorna kan innehålla inställningar med hemliga värden.
+projekt/
+arkiv/
+sessioner/claude-historik/
+sessioner/installationslogg-*.txt
+verktyg/installation/
+verktyg/sakerhetskopior/

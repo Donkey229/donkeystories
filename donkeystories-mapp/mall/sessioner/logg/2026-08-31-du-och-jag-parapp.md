@@ -1,0 +1,14 @@
+# 2026-08-31 – du-och-jag: parapp med platsdelning
+- **Var:** dator (Remote Control)
+- **Gjort:**
+  - Byggde Du&Jag, en privat PWA för två telefoner: karta och platsdelning, chatt, Love Touch, speciella dagar, tidslinje och "Förseglade brev".
+  - Servern skrevs i Python 3.14 (bara standardbiblioteket plus cryptography) på port 8790.
+  - Säkerhetspaket: AES-256-GCM på all data, HttpOnly-kaka, CSP och gissningsspärr.
+  - Omdesign v2. Testerna gick gröna (43 + 26 + 21).
+  - Tyst autostart via Startup-mappen.
+- **Beslut:**
+  - PWA i stället för native-app.
+  - Servern på den egna datorn, ingen molnlagring.
+  - Inga nya beroenden.
+- **Kvar / nästa steg:** ingenting. Appen **avvecklades 2026-09-29** och ersattes av vlogg- och minnesappen. Den är arkiverad i `arkiv\du-och-jag`. Kontrollera att autostarten är avstängd.
+- **Filer:** `arkiv\du-och-jag\`. `data\` och `nyckel.hemlig` är hemliga och får aldrig publiceras.

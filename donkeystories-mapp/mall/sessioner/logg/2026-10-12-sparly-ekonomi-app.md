@@ -1,0 +1,19 @@
+# 2026-10-12 – sparly: ekonomi-appen byggs
+- **Var:** dator (Claude-appen med Remote Control)
+- **Gjort:**
+  - Byggde `sparly.html`, en svensk ekonomi-app i en fil (glassmorphism, localStorage):
+    - budget, återkommande poster och sparmål
+    - kalender, diagram, sök och export/import
+  - Granskades i två rundor med flera agenter (29 + 7 fynd), som alla rättades.
+  - Testlista för Samsung och iPhone skrevs.
+  - Donkey valde en installerbar webbapp (PWA): manifest, service worker, ikoner, `bygg-webbapp.ps1` och guiden `LAGG-UT-APPEN.md`.
+- **Beslut:**
+  - Allt lokalt i projektmappen. Appdata bara i telefonen. CSP `connect-src 'none'`.
+  - Allt på svenska.
+  - Logga allt i `sparly-chatt.md`.
+- **Kvar / nästa steg:**
+  - Gå igenom PWA-granskningen.
+  - Verifiera offline-läget.
+  - Publicera på GitHub Pages efter Donkeys ja.
+  - Testa i telefonerna.
+- **Filer:** `projekt\sparly\` (sparly.html, sparly-chatt.md, testa-sparly.md, LAGG-UT-APPEN.md, bygg-webbapp.ps1, webbapp\)

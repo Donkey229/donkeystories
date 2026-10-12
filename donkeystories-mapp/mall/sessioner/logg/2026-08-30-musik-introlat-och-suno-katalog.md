@@ -1,0 +1,20 @@
+# 2026-08-30 – musik: introlåt till vloggen och Suno-katalogen
+- **Var:** dator (Remote Control). Sessionen "Introlåt till vlogg" pågick 2026-08-30 till 09-01.
+- **Gjort:**
+  - Genererade musik i Suno via Claude in Chrome. Allt laddades ner och sorterades per stil på disk E:.
+  - 108 intron (signatur, 10–18 s) och 100 matchande outros, med samma nummer som intron.
+  - Låtkatalog: 20 stilar × 50 låtar (1000 mp3, cirka 2,8 GB, engelska texter).
+  - Ljudpaket för videoredigering: bakgrundsljud, effekter, intron och outros (400 genererade).
+  - 100 thailändska rap- och reggaetonlåtar och 30 thailändska festlåtar.
+- **Beslut:**
+  - Introt blir en kanalsignatur: hook i takt ett, konstant BPM och tvärt slut.
+  - MP3 i bulk. WAV hämtas bara för vinnaren.
+  - Inget raderas i Suno-kontot.
+- **Kvar / nästa steg:**
+  - Donkey väljer signaturintro. Det läggs sedan in i `intro_motor.py` med beatgrid och normaliserat till −14,6 dBFS.
+  - 165 filer i ljudpaketet laddades inte ner.
+  - Gamla zip-filer från Suno kan rensas, men bara efter Donkeys ja.
+  - Musiken ligger nu samlad i `E:\Musik`.
+- **Filer:**
+  - Promptkataloger i `projekt\donkey-panel\` (`suno_intro_prompts.txt`, `suno_50_intron.txt`, `latar\`)
+  - musiken på E:
