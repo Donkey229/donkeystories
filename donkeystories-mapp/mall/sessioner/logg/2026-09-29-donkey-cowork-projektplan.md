@@ -1,0 +1,18 @@
+# 2026-09-29 – donkey-cowork: projektplan och Donkey Lab
+- **Var:** dator (Remote Control). Sessionen pågick 2026-09-29 till 10-01.
+- **Gjort:**
+  - Byggde Donkey Cowork, den lokala projektpanelen på port 8770: live-koll, råd med fem ingenjörer, chatt och fliken Plan & promptar.
+  - Skrev huvudplanen `PLAN.md` med fem steg och färdiga promptar.
+  - Startade företaget **Donkey Lab**: roller, dagbok, mejl till Donkey och den schemalagda styrelsen `donkey-styrelsemote`.
+  - Klar musikstrategi för cirka 1130 låtar. Sprinten "inkomst först" valde två inkomstprojekt, Donkey Låtvideo och Donkey Musikbibliotek.
+- **Beslut:**
+  - Servern lyssnar bara på 127.0.0.1.
+  - Ingenting publiceras utan Donkeys ja i chatten.
+  - Kvottak 80 %.
+  - Bara ett styrelsepass åt gången.
+  - Radera aldrig filer.
+- **Kvar / nästa steg:**
+  - Kontrollera sprintens slutrapport (`foretaget\slutrapport.md`) och att schemat återgick efter 4/10.
+  - Donkey lyssnar på de 30 föreslagna låtarna.
+  - Steg 3: Donkey Hub.
+- **Filer:** `projekt\donkey-cowork\` (server.py, data.json, PLAN.md, promptar\, foretaget\)

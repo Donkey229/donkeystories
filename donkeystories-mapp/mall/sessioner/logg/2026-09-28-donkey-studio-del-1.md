@@ -1,0 +1,16 @@
+# 2026-09-28 – donkey-studio: pelare 1 och 2 (Cubase Donkey, del 1)
+- **Var:** dator (Remote Control). Arbetet pågick 2026-09-23 till 09-29.
+- **Gjort:**
+  - Donkey Studio, som gör musik utanför Cubase: pelare 1 (kunskap, 116 prov) och pelare 2 (mätning och kritik) byggdes och verifierades.
+  - Lagade mätfel: tempohalvering, dur och moll, intro från basens insläpp, och oktavkontroll med Demucs.
+  - "Val 1" infördes som hård regel 15: mål ger varning och spärren P5–P95 ger underkänt.
+  - Tre oberoende granskare. Resultatet blev 1064 gröna tester och validatorn OK.
+- **Beslut:**
+  - Cubase styrs aldrig.
+  - Ingen ljudmodell i ryggraden: MIDI plus lokala VST3.
+  - Gränsvärden ändras bara med korpusbevis.
+- **Kvar / nästa steg:**
+  - Tre gränsbeslut väntar på Donkey.
+  - Fyra nya genrer.
+  - Smart App Control blockerar basic-pitch. Det är Donkeys beslut.
+- **Filer:** `projekt\donkey-studio\` (CLAUDE.md, PROGRESS.md, knowledge\, analysis\, tests\)

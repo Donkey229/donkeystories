@@ -1,0 +1,25 @@
+# 2026-09-30 – donkey-cowork: Donkey Lab styrelsemöte och sprint
+- **Var:** dator. Sessionen startade som den schemalagda uppgiften `donkey-styrelsemote` och pågick 2026-09-30 till 10-01.
+- **Gjort** (styrelsen med Viktor, Dante, Leo, Sami, Holger och Claude, med egna hjälpagenter):
+  - **Donkey Cowork:** fliken Dagbok.
+  - **Donkey Film:** fas B (looks) och C1 (automatisk sångtext och kö), neon-karaoke och sångtider via Demucs.
+  - **Musikutgivningen:** 20 av 30 musikvideor med YouTube-paket.
+  - **Musikbiblioteket:** paketbyggare och 3 musikpaket. **Grading:** 2 lookpaket.
+  - **Låtvideo:** beställningsflöde och säljsida.
+  - **Hemsidan:** design-v2 med 7 sidor på SV/EN/TH, offline.
+  - **Donkey-sångare:** tecknat prov och Wan2.2-prov (26 GB, efter Donkeys ja).
+  - Två fria spel: **Tonjakten** och **Tempelvakten**.
+  - Utredningar om Sunos villkor (musikpaket får säljas efter Donkeys "publicera") och betaltjänst (Lemon Squeezy först).
+  - Läckagekollen och Offertkollen stoppades. Du&Jag ströks helt.
+- **Beslut:**
+  - Allt lokalt. **Ingenting publicerat.**
+  - Publicering, nedladdningar, pengar och konton kräver Donkeys ja.
+  - Sessionerna samordnar sig i `foretaget\samordning.md`.
+  - Donkey sa nej till att ladda ner en lokal språkmodell till Tempelvakten.
+- **Kvar / nästa steg:**
+  - musikvideor 21–30 och kortvideor 14–19 (efter rättningen av neon-texten)
+  - rätta fynd T1 i Tempelvakten
+  - thai-läsare
+  - betalkonto och licensuppgifter
+  - slutrapporten (4/10)
+- **Filer:** `projekt\donkey-cowork\foretaget\` (STYRELSEN.md, roller.md, samordning.md, dagbok\) och projektmapparna ovan

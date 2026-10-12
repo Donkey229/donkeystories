@@ -1,0 +1,22 @@
+# 2026-10-12 – donkeystories: samlingsmappen C:\Donkeystories
+- **Var:** moln (Claude Code i webben/appen)
+- **Gjort:**
+  - Läste igenom alla tidigare sessioner och alla GitHub-repon.
+  - Byggde installationen `donkeystories-mapp\` i repot `donkeystories`:
+    - `installera.ps1` och `installera.cmd`
+    - CLAUDE.md för samlingsmappen och för varje projekt
+    - `PROJEKT.md`
+    - sessionsloggar
+  - Skriptet skapar `C:\Donkeystories` och flyttar projekten hit. Det lämnar länkar på de gamla platserna, så att genvägar och schemalagda uppgifter fungerar.
+  - Skriptet ställer in Claude Code:
+    - Claude läser den här mappen först.
+    - Chattar sparas i 10 år.
+    - Historiken sparas i `sessioner\claude-historik`.
+- **Beslut** (Donkey valde):
+  - installationen ligger i det publika repot, utan privata detaljer
+  - projekt i OneDrive flyttas
+  - alla chattar sparas här
+- **Kvar / nästa steg:**
+  - Kör `installera.cmd` på varje dator och Windows-konto där Claude använts, först med `-Provkorning`.
+  - Sedan, efter Donkeys ja: gå igenom `sessioner\claude-historik` och komplettera projektens CLAUDE.md.
+- **Filer:** `CLAUDE.md`, `PROJEKT.md`, `verktyg\installation\`
