@@ -54,6 +54,7 @@ Designen är mörkt nattblå (#012235) med orange accent. Typsnitten ligger loka
 1. Bestäm om domänen ska användas. Antingen köps donkeystories.com och DNS-posterna för GitHub Pages läggs in (då behövs CNAME igen), eller så används github.io-adressen.
 2. Bestäm vad som ska hända med vloggsektionen på `claude/vlog-styling-04md2i`: PR, ändringar eller ta bort grenen.
 3. Fyll i riktiga länkar (YouTube @DonkeyMusic, TikTok och Instagram) och "Senaste video".
+   `og:image` i `index.html` pekar fortfarande på donkeystories.com, så förhandsbilden blir trasig när någon delar länken. Använd en relativ adress eller github.io-adressen tills domänen fungerar.
 4. Design-v2 före publicering:
    - betallänkar
    - riktig mejladress

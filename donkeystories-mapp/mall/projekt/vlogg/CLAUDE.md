@@ -50,5 +50,5 @@ Appen ersätter den nedlagda Du&Jag.
 - Fyra filmer från 24 aug (i `projekt\vlogg-import\resan`) är inte uppladdade.
 - Två tvådagarsminnen ska ändras från "Dag" till "Utflykt" (Donkey bekräftar).
 - Ett foto i juni-minnet är taget i september. Donkey avgör.
-- Kontrollera att GitHub-workflowet `keepalive.yml` körs, annars pausas Supabase.
+- Kontrollera att GitHub-workflowet `keepalive.yml` körs, annars pausas Supabase. GitHub stänger av schemalagda workflows i publika repon efter 60 dagar utan aktivitet i repot.
 - Flytt till vlog.donkeystories.com när domänen fungerar. Det kräver ny inloggning och nya notiser.
