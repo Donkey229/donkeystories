@@ -161,6 +161,7 @@ function Sakerhetskopiera([string]$Fil) {
     if (-not (Test-Path -LiteralPath $mapp)) { New-Item -ItemType Directory -Path $mapp -Force | Out-Null }
     $namn = ($Fil -replace '[:\\/]+', '_').Trim('_')
     $kopia = Join-Path $mapp $namn
+    if (Test-Path -LiteralPath $kopia) { return }   # behåll den första (mest ursprungliga) kopian från den här körningen
     Copy-Item -LiteralPath $Fil -Destination $kopia -Force
     Skriv-Info "Säkerhetskopia: $kopia"
 }
