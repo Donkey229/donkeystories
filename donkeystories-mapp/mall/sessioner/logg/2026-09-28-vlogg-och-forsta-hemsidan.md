@@ -1,0 +1,24 @@
+# 2026-09-28 – vlogg: första hemsidan och minnesvloggen
+- **Var:** dator (Claude-appen, styrd från mobilen med Remote Control). Sessionen "Första websidan" pågick 2026-09-28 till 10-02.
+- **Gjort:**
+  - **Hemsidan:** Donkey Stories första statiska sida på SV/EN/TH publicerades på GitHub Pages. Domänen donkeystories.com köptes hos STRATO, men DNS blev inte klar, så CNAME togs bort och sidan körs på github.io. Repot gjordes om till ett nytt, rent repo, och det gamla blev privat (`donkeystories-gammal`).
+  - **Minnesvloggen:** byggd i `projekt\vlogg` med JavaScript (PWA), Supabase och GitHub Pages. Den har:
+    - kalender, minnen och import av foto och film (GPS rensas, filmer komprimeras)
+    - notiser, träffar, tidslinjen "vägen", platser och reaktioner
+    - dagar tillsammans och en iPhone-widget (Scriptable)
+    - Frågor & spel
+  - En total omdesign publicerades 2/10. Allt testdrevs och granskades av egna granskningsagenter.
+- **Beslut:**
+  - Supabase och GitHub Pages i stället för egen server, eftersom datorn ofta är avstängd.
+  - Privat som standard.
+  - Ingen tvåstegsverifiering, på Donkeys begäran.
+  - Originalfilmer stannar lokalt.
+  - Publicering sker via GitHub-webben (git push fungerar inte).
+  - Claude kör inte produktions-SQL. Donkey klickar Run.
+- **Kvar / nästa steg:**
+  - Emma granskar thai-texterna.
+  - Fyra filmer återstår att ladda upp.
+  - Ta bort ett gammalt frågepaket.
+  - Bestäm om lagringen (gratisplanen 1 GB).
+  - Koppla domänen när DNS finns.
+- **Filer:** `projekt\vlogg\` (site, sql, functions, tests, tools), `projekt\vlogg-import\`, `projekt\donkeystories\`

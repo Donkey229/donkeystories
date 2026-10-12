@@ -2,8 +2,7 @@
   "om": "Projektlistan som installera.ps1 använder. namn = mappnamn i C:\\Donkeystories\\projekt (eller arkiv). kanda_platser = där projektet låg innan. %DOKUMENT% och %SKRIVBORD% är Windows egna mappar (de kan ligga i OneDrive). arkiv = hamnar i C:\\Donkeystories\\arkiv.",
   "projekt": [
     {"namn": "donkeystories", "titel": "Donkey Stories – central hemsida", "repo": "https://github.com/Donkey229/donkeystories.git", "kanda_platser": ["%DOKUMENT%\\donkeystories"], "arkiv": false},
-    {"namn": "vlog", "titel": "Vlogg och minnesapp (privat)", "repo": "https://github.com/Donkey229/vlog.git", "kanda_platser": ["%DOKUMENT%\\vlog"], "arkiv": false},
-    {"namn": "vlogg", "titel": "Vloggens arbetsmapp (film, import, site)", "repo": "", "kanda_platser": ["%DOKUMENT%\\vlogg"], "arkiv": false},
+    {"namn": "vlogg", "titel": "Vlogg och minnesapp (privat; källan till Donkey229/vlog)", "repo": "", "kanda_platser": ["%DOKUMENT%\\vlogg"], "arkiv": false},
     {"namn": "vlogg-import", "titel": "Vloggens importmapp", "repo": "", "kanda_platser": ["%DOKUMENT%\\vlogg-import"], "arkiv": false},
     {"namn": "sparly", "titel": "Sparly – ekonomi-app", "repo": "", "kanda_platser": ["%SKRIVBORD%\\sparly", "%OneDrive%\\Skrivbord\\sparly", "%OneDrive%\\Desktop\\sparly", "%USERPROFILE%\\Desktop\\sparly"], "arkiv": false},
     {"namn": "donkey-cowork", "titel": "Donkey Cowork och Donkey Lab (styrelsen)", "repo": "", "kanda_platser": ["%DOKUMENT%\\donkey-cowork"], "arkiv": false},

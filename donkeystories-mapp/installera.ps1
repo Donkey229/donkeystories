@@ -508,6 +508,11 @@ $SystemMappar = @($env:SystemRoot, $env:ProgramFiles, ${env:ProgramFiles(x86)}, 
 
 function Far-Flyttas([string]$Sokvag) {
     if (-not $Sokvag -or -not (Test-Path -LiteralPath $Sokvag -PathType Container)) { return $false }
+    # Mappar med hemligheter (t.ex. vlogg-hemligt) flyttas aldrig och läggs aldrig i samlingsmappen.
+    if ((Split-Path -Leaf $Sokvag) -match '(?i)hemlig|secret|nycklar|losenord|lösenord|password') { return $false }
+    # En git-worktree (där .git är en fil) hör till sitt huvudrepo och flyttas inte för sig.
+    $gitPost = Join-Path $Sokvag '.git'
+    if (Test-Path -LiteralPath $gitPost -PathType Leaf) { return $false }
     if (Under-Lank $Sokvag) { return $false }   # redan flyttad (den gamla platsen är en länk)
     if ([System.IO.Path]::GetPathRoot($Sokvag) -eq $Sokvag) { return $false }
     if (Ar-Inuti $Sokvag $Mapp) { return $false }
@@ -525,7 +530,7 @@ function Hitta-Gitrot([string]$Sokvag) {
     if (-not $Sokvag -or -not (Test-Path -LiteralPath $Sokvag -PathType Container)) { return $Sokvag }
     $d = $Sokvag
     while ($d) {
-        if (Test-Path -LiteralPath (Join-Path $d '.git')) { return $d }
+        if (Test-Path -LiteralPath (Join-Path $d '.git') -PathType Container) { return $d }
         $foralder = Split-Path -Parent $d
         if (-not $foralder -or (Ar-Samma $foralder $d)) { break }
         if (Ar-Samma ([System.IO.Path]::GetPathRoot($foralder)) $foralder) { break }

@@ -47,7 +47,9 @@ Den gör att skrivbordsgenvägar, schemalagda uppgifter och program som Donkey C
 - Ge val som numrerade alternativ med din rekommendation först.
 - Inget är klart förrän det är testat. Säg aldrig att något fungerar utan att ha kört det.
 - **Radera aldrig Donkeys filer.** Flytta till `arkiv\` i stället, och visa en lista först.
-- **GitHub och publicering:** ingen push, inga nya grenar, inga PR:er, ingen DNS-ändring och ingen uppladdning (YouTube, webb) utan ett uttryckligt ja i chatten.
+- **GitHub och publicering:** ingen push, inga nya grenar, inga PR:er, ingen DNS-ändring och ingen uppladdning (YouTube, webb) utan ett uttryckligt ja i chatten. På huvuddatorn fungerar inte `git push`, så publicering sker genom uppladdning på github.com i Chrome.
+- **Konton och hemligheter:** skapa aldrig konton och skriv aldrig lösenord eller nycklar. Mappar med hemligheter (t.ex. `Dokument\vlogg-hemligt`) rörs inte.
+- Inget skickas till Emma utan Donkeys uttryckliga ok.
 - **Privat och publikt blandas aldrig.** Privat är vlogg- och minnesappen, Emma & Du, Du&Jag, Sparly-data och arbetsorder. Publika repon (`donkeystories`, `vlog`) får aldrig innehålla privata uppgifter, lösenord eller nycklar.
 - Ändra aldrig Windows-, säkerhets- eller energiinställningar (t.ex. Smart App Control). Rapportera i stället.
 - Var sparsam med kvoten. Fråga innan stora agentflöden eller återkommande bevakningar.

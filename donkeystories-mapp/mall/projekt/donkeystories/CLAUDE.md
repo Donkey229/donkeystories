@@ -25,7 +25,10 @@ Designen är mörkt nattblå (#012235) med orange accent. Typsnitten ligger loka
 - `donkeystories-mapp\` – installationen av C:\Donkeystories (publiceras inte på sidan, se `_config.yml`)
 
 ## Så körs det
-Det finns inget byggsteg. Öppna `index.html` eller servera mappen lokalt. GitHub Pages publicerar `main` automatiskt.
+- Det finns inget byggsteg. Förhandsvisa med `py -3.14 -m http.server 8770` i mappen.
+- Ändra texter i alla tre språken i `app.js`.
+- **Publicering:** `git push` fungerar inte på huvuddatorn. Ändrade filer laddas upp via GitHub-webben i Chrome, och GitHub Pages publicerar `main` automatiskt.
+- Lokala commits görs med GitHubs noreply-adress, aldrig med Gmail-adressen. Det gamla repot gjordes privat eftersom gamla commits innehöll den.
 
 ## Status (2026-10-12)
 - `main` är publicerad. CNAME är borttagen, så sidan fungerar på github.io-adressen.

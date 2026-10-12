@@ -9,8 +9,7 @@
 | Projekt | Mapp | Vad det är | Status | Nästa steg |
 |---|---|---|---|---|
 | **Donkey Stories – hemsidan** | `projekt\donkeystories` | Publik hemsida på SV/EN/TH. GitHub `Donkey229/donkeystories` (publikt). | Live på donkey229.github.io/donkeystories. Vloggsektion i reel-stil ligger på en egen gren. Design-v2 (7 sidor) är klar offline men inte publicerad. | Domän, vloggsektionen, och design-v2:s publiceringskoll (51 fynd). |
-| **Vlogg och minnesapp** | `projekt\vlog` | Privat webbapp för Donkey och Emma med Supabase. GitHub `Donkey229/vlog`. | Live på donkey229.github.io/vlog (noindex, inloggning). | – |
-| **Vloggens arbetsfiler** | `projekt\vlogg`, `projekt\vlogg-import` | Film, import och avsnitt. | 4 filmer från resan återstår att ladda upp. | Donkey loggar in i Chrome så att de kan laddas upp. |
+| **Vlogg och minnesapp** | `projekt\vlogg` (källan) och `projekt\vlogg-import` | Privat webbapp (PWA) för Donkey och Emma med Supabase. `site\` laddas upp till GitHub `Donkey229/vlog`. | Live på donkey229.github.io/vlog. Omdesign 2/10. | Thai-granskning, 4 filmer att ladda upp, ta bort gammalt frågepaket. |
 | **Sparly** | `projekt\sparly` | Ekonomi-app i en HTML-fil och installerbar webbapp. Privat data. | Appen klar och granskad. PWA-granskningen är inte genomgången. Inte publicerad. | Rätta PWA-fynden, testa på Samsung och iPhone, och publicera efter Donkeys ja. |
 | **Donkey Cowork och Donkey Lab** | `projekt\donkey-cowork` | Projektpanelen (port 8770), styrelsen med AI-delägare och dagboken. | Fungerar (85 %). Sprinten "inkomst först" kördes 30/9–4/10. | Kolla `foretaget\slutrapport.md`. Steg 3: Donkey Hub, minimal och sist. |
 | **Donkey Film** | `projekt\donkey-film` | Gör kortvideor, musikvideor (4K Galaxy), Canvas och miniatyrer av en låt. | Cirka 96 %. Musikvideo är inflyttad, och looks, automatisk sångtext, kö och neon-karaoke är klara. | Rätta neon-texten som överlappar omslaget. |
@@ -47,7 +46,7 @@
 | Repo | Synlighet | Används till |
 |---|---|---|
 | `donkeystories` | publikt | hemsidan, plus installationen av den här mappen (`donkeystories-mapp\`) |
-| `vlog` | publikt (innehåll bakom inloggning) | vlogg och minnesapp |
+| `vlog` | publikt (innehåll bakom inloggning) | bara `site\` från `projekt\vlogg`, uppladdad via webben |
 | `donkeystories-gammal` | privat | arkiv |
 | `donkey-website` | privat | arkiv |
 | `sparly` | finns inte än | planerat för Sparly |
