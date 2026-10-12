@@ -12,7 +12,7 @@ Donkey Film gör färdiga klipp av en låt plus film eller bilder:
 Den bygger på PySide6, FFmpeg (NVENC), librosa och faster-whisper (undertexter) och har en egen venv: `_py311`.
 
 ## Viktigt
-- Projektets egen `CLAUDE.md` och `LÄS MIG.md` gäller först.
+- Projektets egna regler (`CLAUDE.md` eller `.claude\CLAUDE.md`) och `LÄS MIG.md` gäller först.
 - Rör aldrig VEGAS. Appen renderar själv med FFmpeg.
 - Nycklar i koden är ASCII (stjarnfall, solnedgang). Byt dem aldrig mot å, ä eller ö.
 - Smart App Control blockerar vissa DLL:er i `_py311`. Rapportera, och ändra aldrig inställningen.

@@ -41,6 +41,7 @@ $m = "$env:TEMP\donkeystories-setup"
 [Net.ServicePointManager]::SecurityProtocol = 'Tls12'
 Invoke-WebRequest "https://github.com/Donkey229/donkeystories/archive/refs/heads/claude/donkeystories-folder-setup-5gzoey.zip" -OutFile "$m.zip" -UseBasicParsing
 Expand-Archive "$m.zip" $m -Force
+Get-ChildItem $m -Recurse -File | Unblock-File
 $k = (Get-ChildItem $m -Recurse -Filter installera.cmd | Select-Object -First 1).FullName
 & $k -Provkorning
 ```
@@ -60,6 +61,8 @@ Det går också bra att dubbelklicka på `installera.cmd` i den uppackade mappen
 
 Skriptet kan köras flera gånger. Det som redan är gjort hoppas över.
 
+**Om Windows stoppar skriptet** (Smart App Control eller "begränsat läge"): högerklicka på `installera.ps1` → Egenskaper → kryssa i **Avblockera** → OK, och försök igen. Raden `Unblock-File` ovan gör samma sak.
+
 ## Efteråt
 
 1. **Starta Claude i `C:\Donkeystories`.** I Claude-appen väljer du mappen `C:\Donkeystories`, eller en projektmapp under den, och skriver till exempel *"Läs C:\Donkeystories och berätta vad som finns"*.
@@ -67,8 +70,11 @@ Skriptet kan köras flera gånger. Det som redan är gjort hoppas över.
 3. **Cowork i Claude-appen:** Cowork läser inte alltid CLAUDE.md. Gå till **Inställningar → Allmänt → Instruktioner för Claude** och skriv:
    *"Läs alltid C:\Donkeystories\CLAUDE.md och C:\Donkeystories\PROJEKT.md först. Spara allt nytt i C:\Donkeystories."*
    Välj sedan mappen `C:\Donkeystories` när du startar en Cowork-uppgift.
-4. **Första sessionen:** be Claude gå igenom de gamla chattarna i `sessioner\claude-historik` och fylla på projektens `CLAUDE.md`. Där får privata detaljer stå, eftersom mappen bara finns på datorn.
-5. **Git saknas** på datorn där Sparly ligger. Vill du att skriptet ska kunna hämta repona, installera Git (kör `winget install --id Git.Git -e` i PowerShell) och kör skriptet igen.
+4. **Gamla chattar:** alla finns kvar. De syns i `/resume` om du startar Claude i den gamla mappen (den är nu en länk). I den nya mappen öppnar du dem med `claude --resume <id>`. Listan med id finns i `C:\Donkeystories\sessioner\aterupptagning.md`.
+   Första gången du öppnar en flyttad projektmapp frågar Claude om du litar på mappen. Svara ja. Har ett projekt haft egna MCP-servrar behöver de läggas till igen.
+5. **Första sessionen:** be Claude gå igenom de gamla chattarna i `sessioner\claude-historik` och fylla på projektens `CLAUDE.md`. Där får privata detaljer stå, eftersom mappen bara finns på datorn.
+6. **Säkerhetskopia:** `C:\Donkeystories` säkerhetskopieras inte automatiskt, varken av OneDrive eller av Filhistorik. Lägg till mappen i din säkerhetskopiering.
+7. **Git saknas** på datorn där Sparly ligger. Vill du att skriptet ska kunna hämta repona, installera Git (kör `winget install --id Git.Git -e` i PowerShell) och kör skriptet igen.
 
 ## Moln och mobil
 

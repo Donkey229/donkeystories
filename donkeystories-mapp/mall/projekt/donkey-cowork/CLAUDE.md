@@ -13,7 +13,7 @@
 **Donkey Lab** (`foretaget\`) är företaget där AI-delägarna driver projekten via den schemalagda uppgiften `donkey-styrelsemote` i Claude-appen.
 
 ## Viktigt
-Projektets egen `CLAUDE.md` gäller först. Donkeys löpande order står i `foretaget\STYRELSEN.md` och går före mötesprompten.
+Har projektet egna regler (`CLAUDE.md` eller `.claude\CLAUDE.md`) gäller de först. Donkeys löpande order står i `foretaget\STYRELSEN.md` och går före mötesprompten.
 - Servern lyssnar bara på 127.0.0.1 och får aldrig ut på internet.
 - Bara ett styrelsepass åt gången (låset är `foretaget\pass-pagar.txt`).
 - **Samordning:** alla Claude-sessioner skriver in sig i `foretaget\samordning.md` innan de ändrar filer, och rör inte låsta filer (Donkeys order 2026-10-01).

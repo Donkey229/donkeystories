@@ -15,7 +15,7 @@ Projektet bygger på tre pelare:
 Tio agentroller finns i `.claude\agents\`. Cubase används bara för slutimporten, via mapparna `till_cubase\` och `fran_cubase\`.
 
 ## Viktigt
-**Projektets egen `CLAUDE.md` (hårda regler 1–15) och `PROGRESS.md` är facit.** Läs dem först.
+**Donkey Studio har en egen regelbok med hårda regler 1–15** (i projektets egen `CLAUDE.md` eller `.claude\CLAUDE.md`) och en logg i `PROGRESS.md`. De är facit, så läs dem först.
 De viktigaste reglerna:
 - Styr aldrig Cubase. Ingen mus, inget tangentbord, och starta eller stäng det inte.
 - Radera aldrig filer. `E:\Musik` får bara läsas.

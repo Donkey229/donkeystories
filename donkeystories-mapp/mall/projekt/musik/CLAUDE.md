@@ -17,7 +17,7 @@ Index över alla låtar: `lyrics-index.json`.
 Referenskorpus för Donkey Studio: `Stilar\Phonk` (50 låtar) och `Stilar\Lo-fi hiphop` (10 låtar).
 
 ## Regler
-- **Läses bara.** Ändra, flytta eller radera aldrig något här.
+- **Läses bara.** Ändra, flytta eller radera aldrig något här. Undantag: Donkey Lyrics får skriva sina `.txt`-filer och `lyrics-index.json`.
 - Varje publicering (YouTube m.m.) kräver Donkeys "publicera" i Claude-chatten.
 - AI-märkning ska göras i YouTube Studio.
 - Välj de bästa låtarna. Ingen massuppladdning.

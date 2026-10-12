@@ -13,7 +13,7 @@ Den globala filen `%USERPROFILE%\.claude\CLAUDE.md` pekar hit, så reglerna gäl
    - uppdatera projektets `CLAUDE.md` (status, beslut, nästa steg),
    - uppdatera projektets rad i `PROJEKT.md`,
    - skriv en sessionslogg i `sessioner\logg\` (mall längst ner).
-5. **Nytt projekt:** skapa `projekt\<kort-namn>\` med en `CLAUDE.md` (mall: `verktyg\installation\mall\projekt\_ny\CLAUDE.md`) och lägg till en rad i `PROJEKT.md`.
+5. **Nytt projekt:** skapa `projekt\<kort-namn>\` med en `CLAUDE.md` (mall: `verktyg\installation\mall\projekt\_nytt\CLAUDE.md`) och lägg till en rad i `PROJEKT.md`.
 6. Idéer och allmän info som inte hör till ett projekt sparas i `anteckningar\`.
 
 ## Mappen
@@ -24,7 +24,8 @@ Den globala filen `%USERPROFILE%\.claude\CLAUDE.md` pekar hit, så reglerna gäl
 | `projekt\` | Aktiva projekt, ett per mapp, var och en med egen `CLAUDE.md`. |
 | `arkiv\` | Nedlagda och gamla projekt. Raderas aldrig. |
 | `sessioner\logg\` | En kort sammanfattning per arbetspass, även de tidigare sessionerna. |
-| `sessioner\claude-historik\` | Alla Claude Code-chattar (rådata, en mapp per Windows-konto). Rör inte filerna. |
+| `sessioner\claude-historik\` | Alla Claude Code-chattar (rådata, en mapp per Windows-konto). Rör inte filerna. Sökningar hoppar över mappen (`.ignore`). |
+| `sessioner\aterupptagning.md` | Lista över gamla chattar från flyttade projekt och hur de öppnas igen. |
 | `anteckningar\` | Idéer och allmän info. |
 | `verktyg\installation\` | Installationsskriptet. Det går att köra igen. |
 
@@ -53,7 +54,7 @@ Den gör att skrivbordsgenvägar, schemalagda uppgifter och program som Donkey C
 - **Privat och publikt blandas aldrig.** Privat är vlogg- och minnesappen, Emma & Du, Du&Jag, Sparly-data och arbetsorder. Publika repon (`donkeystories`, `vlog`) får aldrig innehålla privata uppgifter, lösenord eller nycklar.
 - Ändra aldrig Windows-, säkerhets- eller energiinställningar (t.ex. Smart App Control). Rapportera i stället.
 - Var sparsam med kvoten. Fråga innan stora agentflöden eller återkommande bevakningar.
-- **Flera Claude-sessioner samtidigt:** skriv in dig i `projekt\donkey-cowork\foretaget\samordning.md` innan du ändrar filer, och rör inte filer som en annan session har låst.
+- **Flera Claude-sessioner samtidigt:** finns `projekt\donkey-cowork` på den här datorn, skriv in dig i `projekt\donkey-cowork\foretaget\samordning.md` innan du ändrar filer och rör inte filer som en annan session har låst. Skapa inte filen om mappen saknas.
 - Publicering, nedladdning av stora filer eller modeller, pengar, konton och systeminställningar kräver alltid Donkeys ja.
 - Thai-texter läses av en thai-läsare innan något publiceras.
 - Numrera frågor så att Donkey kan svara kort ("1 ja 2 nej").
@@ -65,7 +66,7 @@ Den gör att skrivbordsgenvägar, schemalagda uppgifter och program som Donkey C
 - Python: `py -3.14`. Donkey Film har en egen venv (`_py311`).
 - Lokala servrar, bara på 127.0.0.1: 8765 Arbetsorder · 8766 Ljudbrädan · 8767 Donkey Studio · 8768 God Mode · 8769 Lyrics · 8770 Donkey Cowork · 8786 Tempelvakten · 8811–8820 Tonjakten · 8188 ComfyUI. Testservrar använder 8779 och 8799.
 - Program: Cubase Pro 10.5 (rör aldrig Cubase automatiskt), VEGAS Pro 15, ffmpeg med NVENC, Chrome.
-- Musiken ligger i `E:\Musik` (Stilar, Thai, Ljud, Effect sounds) och ska bara läsas. Övriga mappar på E: (foto, video, nedladdningar) är privata. Öppna dem inte utan att Donkey ber om det.
+- Musiken ligger i `E:\Musik` (Stilar, Thai, Ljud, Effect sounds) och ska bara läsas. **Undantag:** Donkey Lyrics får skriva sina `.txt`-filer och `lyrics-index.json` där. Övriga mappar på E: (foto, video, nedladdningar) är privata. Öppna dem inte utan att Donkey ber om det.
 - GitHub-kontot heter **Donkey229**. På datorn där Sparly byggdes finns varken Git eller Python, bara PowerShell.
 - Donkey Cowork (http://127.0.0.1:8770) är projektpanelen och har en egen projektlista (`donkey-cowork\data.json`). Håll den och `PROJEKT.md` i takt.
 

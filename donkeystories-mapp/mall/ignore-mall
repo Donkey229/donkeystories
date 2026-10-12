@@ -1,0 +1,5 @@
+# Sökningar i Claude Code (ripgrep) hoppar över de här mapparna.
+# Filerna finns kvar och kan läsas när någon uttryckligen ber om det.
+sessioner/claude-historik/
+verktyg/sakerhetskopior/
+verktyg/installation/

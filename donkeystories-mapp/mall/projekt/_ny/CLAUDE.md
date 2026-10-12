@@ -1,6 +1,6 @@
 # {{NAMN}}
 
-> Samlades i `C:\Donkeystories` {{DATUM}}. Tidigare plats: `{{GAMMAL_PLATS}}` (där finns nu en länk hit).
+> {{URSPRUNG}}
 > Fyll i rubrikerna nedan nästa gång du arbetar med projektet.
 
 ## Vad är det här?
